@@ -1,0 +1,197 @@
+Best Practices for Writing Bash Scripts
+******************************************
+
+
+1.Shebang (Script Header)
+Every Bash script should start with the shebang line, which tells the system which interpreter to use.
+
+#!/bin/bash
+-------------------------------------------------------------------------------
+2. Metadata (Optional but Useful)
+Including metadata (like author, date, and description) at the top of the script is a good practice for documentation.
+
+# Author: Your Name
+# Date: YYYY-MM-DD
+# Description: This script performs XYZ tasks
+
+
+3. Use 
+       set -ex
+       set -o pipefail
+
+set -e: Exit the script if any command returns a non-zero exit code.
+set -o pipefail: Return the exit status of the last command in the pipeline that failed.
+set -x: Print commands and their arguments as they are executed (useful for debugging).
+-------------------------------------------------------------------------------------------------------------------
+
+4. Comments
+Use comments to explain complex or non-obvious parts of your script. Comments are ignored by the shell during execution.
+
+# This is a comment
+---------------------------------------------------------------------------------------------------------------------
+
+5. Variables
+Declare and use variables for flexibility and reusability.
+
+name="Alice"
+age=25
+echo "Name: $name, Age: $age"
+
+Recommended Practice
+It is generally good practice to always use double quotes around variables to ensure that your script behaves consistently and 
+avoids unexpected behavior. This helps in handling variables that might contain spaces or special characters safely.
+
+ex1: my_var="Hello world"
+set -- $my_var  # This splits `my_var` into two positional parameters
+echo "$1"       # Output: Hello
+echo "$2"       # Output: world
+
+ex2:  my_var="Hello $USER"
+echo $my_var   # Output: Hello username (without quotes, user variable might expand)
+echo "$my_var" # Output: Hello username (with quotes, user variable expands correctly
+------------------------------------------------------------------------------------------------------------------------
+
+6. Commands
+The script will include various Linux commands that perform tasks.
+
+# Display the current working directory
+echo "Current working directory:"
+pwd
+
+Output:
+Current working directory:
+/home/username  # This will vary depending on where you run the script
+
+# Store the output of `date` command in a variable
+current_date=$(date)
+
+# Store the list of files and directories in a variable
+file_list=$(ls -l)
+
+# Display the stored values
+echo "Current date and time: $current_date"             >> because command output is in one line only
+
+>> Current date and time: Sat Sep 28 10:20:36 UTC 2024                   
+
+echo "Files and directories: $file_list"                  >> command output is not in one line so it will give below correct but inappropriate results
+>>Files and directories: total 32 -rw-r--r-- 1 user user 4096 Sep 25 12:34 file1.txt -rw-r--r-- 1 user user 1024 Sep 25 12:35 file2.txt drwxr-xr-x 2 user user 4096 Sep 25 12:36 directory1 ...
+
+so to get correct results, use this as following
+
+echo "Files and directories:"
+echo "$file_list"   
+
+
+---------------------------------------------------------------------------------------
+
+7. Input/Output Redirection
+Redirect input or output to/from files. Overwrite or append to files using redirection operators.
+
+
+echo "This will be saved to a file" > output.txt  # Overwrite output.txt
+cat < input.txt                                  # Read from input.txt
+
+--------------------------------------------------------------------------------------------
+
+8. Conditional Statements (if-else)
+Use conditional statements to make decisions in your script.
+
+age="18"
+
+if [ "$age" -ge 18 ]; then 
+  echo "You are an adult."
+else
+  echo "You are a minor."
+fi
+----------------------------------------------------------------------------------------------
+
+9. Loops
+a. For   Loop
+Loop through a set of values.
+
+for i in {1..5}; do
+  echo "Number: $i"
+done
+
+
+b. While   Loop
+Repeat commands as long as a condition is true.
+
+counter=1
+while [ $counter -le 5 ]; do
+  echo "Counter: $counter"
+  ((counter++))
+done
+---------------------------------------------------------------------------------------------
+
+
+10. Functions
+Functions allow you to reuse blocks of code, making your script modular.
+
+>>Function Name: greet
+>> "Alice" is the first argument passed to the function
+
+Type or call function:  greet "Alice"
+
+greet() {
+  echo "Hello, $1!"
+}
+
+output:  Hello, Alice!
+
+
+
+-------------------------------------------------------------------
+
+11. Script Arguments
+Pass arguments to the script from the command line and use them in the script.
+
+
+./script.sh Kiran Govind
+
+# Inside script.sh
+echo "First argument: $1"
+echo "Second argument: $2"
+
+output: First argument: Kiran
+        Second argument: Govind
+---------------------------------------------------------------------------
+
+
+12. Quoting
+Understand when to use single, double quotes, and backticks:
+
+Double quotes ("): Allows variable expansion.
+Single quotes ('): Treats everything literally.
+Backticks or $(): Used for command substitution.
+
+name="Alice"
+echo "Hello, $name"           # Expands the variable $name to "Alice"
+echo 'Hello, $name'           # Treats '$name' as a literal string
+echo "Current directory: $(pwd)"  # Substitutes the result of the 'pwd' command
+-------------------------------------------------------------------------------------
+
+13. Exit Status ($?)
+Use the exit status of the previous command to determine success or failure.
+
+for example: 
+cp file1.txt file2.txt
+if [ $? -eq 0 ]; then
+  echo "Copy successful"
+else
+  echo "Copy failed"
+fi
+
+--------------------------------------------------------------------------------------
+
+14. Pipes (|)
+Use pipes to pass the output of one command as input to another.
+
+ls | grep "myfile"  # List files and filter for "myfile"
+
+--------------------------------------------------
+
+
+15. Redirection Operators (>, >>, <)
+echo "Hello" > file.txt  # Overwrite file.txt
+echo "World"

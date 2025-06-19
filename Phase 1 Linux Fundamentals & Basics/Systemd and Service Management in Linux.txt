@@ -1,0 +1,59 @@
+------------------------------------------------------------
+                Systemd Cheat Sheet
+           (Linux Service Manager Reference)
+------------------------------------------------------------
+
+1. Core Concepts
+----------------
+- What: systemd = System Daemon (PID 1)
+- Purpose: Manages background processes (services, mounts, timers)
+- Config Locations:
+  - Default units: /usr/lib/systemd/system/
+  - Custom overrides: /etc/systemd/system/
+
+2. Key Commands
+systemctl   → "System Control"
+---------------
+systemctl start <service>            # Start a service
+systemctl stop <service>             # Stop a service
+systemctl restart <service>          # Restart a service
+systemctl enable <service>           # Auto-start at boot
+systemctl disable <service>          # Disable auto-start
+systemctl status <service>           # Check service state + logs
+systemctl list-units --type=service  # List active services
+systemctl list-unit-files            # List all installed services
+systemctl --failed                   # List failed units
+systemctl daemon-reload              # Reload configs after edits
+
+3. Log Management (journalctl)
+journalctl  → "Journal Control" (for logs)
+-------------------------------
+journalctl -u <service>              # Logs for a specific service
+journalctl -xe                       # Full system logs
+journalctl -f                        # Follow logs live (like tail -f)
+journalctl -p "error"                # Show only errors
+journalctl -p "warning"              # Show only warnings
+journalctl --since "1 hour ago"      # Logs from past 1 hour
+
+4. Pro Tips
+-----------
+Debugging:
+  systemctl status <service>         # Check why a service failed
+  journalctl -u <service>            # Dive into logs
+
+Emergency Mode:
+  Use 'systemd.unit=emergency.target' in boot options to troubleshoot startup issues.
+
+
+------------------------------------------------------------
+              Quick Quiz (Self-Test)
+------------------------------------------------------------
+1. Enable Apache to start at boot?
+   → systemctl enable httpd
+
+2. Check failed services?
+   → systemctl --failed
+
+3. View only SSH logs?
+   → journalctl -u sshd
+------------------------------------------------------------

@@ -1,0 +1,73 @@
+✅ GIT & GITHUB INTERVIEW NOTES (POINT-WISE & SIMPLE)
+
+1. WHAT IS GIT?
+- Git is a **version control system (VCS)**.
+- Helps you **track changes** in code over time.
+- Allows **collaboration** – multiple people can work on the same project.
+- You can go back to any previous version of your code if needed.
+
+2. WHY USE GIT?
+- Keeps history of every change.
+- Helps in working with a team without conflicts.
+- Allows experimenting without affecting the main project (using branches).
+
+3. WHAT IS GITHUB?
+- GitHub is a **cloud-based platform** to store Git repositories online.
+- Think of GitHub like **Google Drive for your code**.
+- Offers features like:
+  - Code sharing
+  - Collaboration
+  - Pull requests, Issues, Actions (CI/CD), etc.
+
+4. GIT VS GITHUB:
+- Git = Version control tool (installed locally).
+- GitHub = Website to host Git repositories online.
+
+5. KEY GIT TERMINOLOGIES:
+
+Term         | Meaning (Simple Explanation)
+-------------|------------------------------
+Repository   | A project or folder tracked by Git.
+Commit       | A saved snapshot of your code.
+Branch       | A separate line of development.
+Merge        | Combining changes from one branch to another.
+Clone        | Copying a GitHub repo to your local computer.
+Push         | Upload local code to GitHub.
+Pull         | Download latest code from GitHub to local.
+Remote       | The online (hosted) version of your repository.
+Staging Area | A place where changes wait before committing.
+
+6. BASIC GIT COMMANDS:
+
+- `git init` → Start a new Git repo in a folder.
+- `git clone <url>` → Copy a GitHub repo to your computer.
+- `git status` → Check what files changed.
+- `git add <file>` → Move file to staging area.
+- `git commit -m "message"` → Save snapshot of changes.
+- `git push` → Upload code to GitHub.
+- `git pull` → Get latest changes from GitHub.
+- `git branch` → List or create branches.
+- `git checkout <branch>` → Switch to another branch.
+- `git merge <branch>` → Merge changes into current branch.
+
+7. GIT WORKFLOW (BASIC):
+
+1. Clone the repo: `git clone`
+2. Make changes in code.
+3. Check status: `git status`
+4. Add changes: `git add .`
+5. Commit changes: `git commit -m "message"`
+6. Push to GitHub: `git push`
+
+8. BRANCHING IN GIT:
+
+- Master/Main: Production-ready code.
+- Feature Branch: For developing new features.
+- Bugfix Branch: For fixing issues.
+
+Example:
+```text
+git checkout -b new-feature   → Create and switch to new branch
+git add . && git commit -m "" → Make changes
+git checkout main             → Go back to main
+git merge new-feature         → Merge feature into main

@@ -1,0 +1,123 @@
+Ansible installation on master:
+
+yum update -y
+dnf install -y ansible-core
+ansible localhost -m ping
+ansible ---version 
+-------------------------------------
+on all servers: 
+
+useradd ansible
+passwd ansible   > ansible
+
+--------------------------------------
+Go To:
+
+visudo 
+
+or
+
+/etc/sudoers.d
+ansible ALL=(ALL)       NOPASSWD: ALL
+
+and grant sudo priviledge to ansible user on all server
+
+check: sudo su - root
+---------------------------------------
+Go To:
+
+sudo 
+
+vi /etc/ssh/sshd_config  --with root user
+
+edit below
+
+
+PermitRootLogin yes  -- uncomment
+
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication yes  -- uncomment
+#PermitEmptyPasswords no
+#PasswordAuthentication no  -- comment
+
+-----------------------------------------
+
+service sshd restart
+
+----------------------------------------
+check login with ansible user on ansible server with ansible user
+
+ssh ansible@node1ip --give password of ansible user
+ssh ansible@node2ip -- give password of ansible user
+
+you can now directly ssh without key
+-----------------------------------------------
+
+create public/private keys on ansible server with ansible user run below command
+
+ssh-keygen -- enter-enter-enter 
+
+a  .ssh  folder is created and inside .ssh folder
+
+---------------------------------------------
+
+[ansible@ip-172-31-39-240 .ssh]$ ls -ltr
+total 12
+-rw-r--r-- 1 ansible ansible  348 May 13 03:19 known_hosts
+-rw-r--r-- 1 ansible ansible  434 May 13 03:31 id_rsa.pub
+-rw------- 1 ansible ansible 1675 May 13 03:31 id_rsa
+[ansible@ip-172-31-39-240 .ssh]$ pwd
+/home/ansible/.ssh
+
+step-8:- copy keys to nodes
+
+with ansible user
+
+[ansible@ip-172-31-39-240 .ssh]$ ssh-copy-id ansible@172.31.38.255
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ansible/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+ansible@172.31.38.255's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ansible@172.31.38.255'"
+and check to make sure that only the key(s) you wanted were added.
+
+[ansible@ip-172-31-39-240 .ssh]$
+[ansible@ip-172-31-39-240 .ssh]$
+[ansible@ip-172-31-39-240 .ssh]$ ssh-copy-id ansible@172.31.3.94
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ansible/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+ansible@172.31.3.94's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ansible@172.31.3.94'"
+and check to make sure that only the key(s) you wanted were added.
+
+[ansible@ip-172-31-39-240 .ssh]$
+
+Test the connection:-
+
+[ansible@ip-172-31-39-240 .ssh]$ ssh ansible@172.31.3.94
+Last login: Fri May 13 03:30:38 2022 from ip-172-31-39-240.ap-south-1.compute.internal
+
+       _|  _|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      _|\_|_|
+
+https://aws.amazon.com/amazon-linux-2/
+
+
+
+
+
+
+
+
+
+
+
+

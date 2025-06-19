@@ -1,0 +1,195 @@
+Simple Explanation of Linux Security Systems
+
+1. Traditional Unix Permissions (DAC - Discretionary Access Control)
+What it does: Controls who can read (r), write (w), or execute (x) files.
+
+How it works:
+
+Every file has 3 permission sets:
+
+Owner (user who created it)
+
+Group (users in a shared group)
+
+Others (everyone else)
+
+Example: chmod 750 file.txt means:
+
+Owner: Read + Write + Execute (7 = rwx)
+
+Group: Read + Execute (5 = r-x)
+
+Others: No access (0 = ---)
+
+✅ Best for: Basic security (e.g., personal files).
+❌ Limitation: Can’t give specific users different access (only owner/group/others).
+
+--------------------------------------------------------------------------------------
+
+2. ACLs (Access Control Lists)
+What it does: Adds extra permission rules beyond standard Unix permissions.
+
+How it works:
+
+Lets grant access to specific users/groups FOR specific file or folder (not just owner/group/others).
+
+Example:
+
+setfacl -m u:alice:rwx /shared_folder  # Lets Alice read, write, and execute
+
+#How to find which user got special permission to access these files or folder using acl 
+
+1.Use   { getfacl /path/to/file_or_directory }     to get ACL details for files.
+2.Filter out user ACL entries.
+
+
+✅ Best for: Shared folders (e.g., a team project directory).
+❌ Limitation: Still relies on users/groups (not as strict as SELinux).
+
+3. SELinux (Security-Enhanced Linux)
+What it does: Adds military-grade security by enforcing strict rules.
+How it works:
+
+Labels everything (files, processes) with a security tag (e.g., httpd_sys_content_t).
+
+Blocks actions even if normal permissions allow it.
+
+Example:
+
+Apache (web server) tries to read a file.
+
+Even if the file has rwx for Apache, SELinux can block it if the label doesn’t match.
+
+✅ Best for: Servers, high-security systems (e.g., banks, government).
+❌ Limitation: Complex to configure (but protects against hackers better).
+
+Real-World Analogy
+Security System	Real-Life Comparison
+Unix Permissions	A house with 3 keys: Owner, Family (Group), and Guests (Others).
+ACLs	A smart lock where you can add individual keys for friends (e.g., Alice gets 24/7 access).
+SELinux	A biometric scanner that checks IDs even if someone has a key.
+
+Which One Should You Use?
+Personal computer? → Unix permissions + maybe ACLs.
+
+Shared server? → ACLs + SELinux/AppArmor.
+
+Super-secure system? → SELinux (blocks hackers even if they bypass permissions).
+
+Remember:
+
+Unix permissions = Basic rules.
+
+ACLs = Extra flexibility.
+
+SELinux = Maximum security.
+----------------------------------------------------------------------------
+
+
+===============================
+💡 Linux File Permissions Cheat Sheet
+===============================
+
+🧩 Sequence:
+User - Group - Others
+
+🔐 Permission Values (Octal):
+rwx = 7
+rw- = 6
+r-x = 5
+r-- = 4
+
+===============================
+🛠️ 1. chmod (Change Mode - Permissions)
+===============================
+Change file or directory permissions.
+
+SYNTAX (symbolic):
+chmod [who][operator][permission] filename
+
+Breakdown:
+chmod   u     +,-,=     rwx       filename
+
+Examples:
+chmod u+x script.sh         → Add execute for user
+chmod g-w file.txt          → Remove write from group
+chmod o=r file.txt          → Set read-only for others
+chmod a+rw file.txt         → Add read/write to all
+
+SYNTAX (numeric/octal):
+chmod [octal] filename
+
+Examples:
+chmod 755 file.sh           → rwx for user, r-x for group & others
+chmod 644 document.txt      → rw- for user, r-- for others
+
+===============================
+👑 2. chown (Change Owner)
+===============================
+Change the owner or owner:group of a file.
+
+SYNTAX:
+chown [new_owner] filename  
+chown [new_owner]:[new_group] filename
+
+Examples:
+chown alice file.txt
+chown bob:developers script.sh
+
+===============================
+👥 3. chgrp (Change Group Ownership)
+===============================
+Change the group ownership of a file.
+
+SYNTAX:
+chgrp [group] filename
+
+Example:
+chgrp admins report.txt
+
+===============================
+🎯 4. setfacl (Set File ACLs)
+===============================
+Set special permissions for specific users or groups.
+
+SYNTAX:
+setfacl -m u:[user]:[perms] filename
+setfacl -m g:[group]:[perms] filename
+
+Examples:
+setfacl -m u:john:rw file.txt   → Give john read/write
+setfacl -m g:devs:r-- code.py   → Group 'devs' read-only
+
+Remove ACL:
+setfacl -x u:john file.txt
+
+View ACL:
+getfacl filename
+
+===============================
+⚙️ 5. umask (Default Permissions)
+===============================
+Sets default permissions for newly created files/directories.
+
+Default base permissions:
+Files     → 666 (rw-rw-rw-)
+Directories → 777 (rwxrwxrwx)
+
+SYNTAX:
+umask [value]
+
+Examples:
+umask 022   → Files: 644 | Dirs: 755
+umask 077   → Files: 600 | Dirs: 700
+
+Explanation:
+      666  (base file permission)
+    - 022  (umask)
+    ------
+      644  (final permission)
+
+Check current umask:
+umask
+
+Set permanently:
+Add `umask 022` to ~/.bashrc or /etc/profile

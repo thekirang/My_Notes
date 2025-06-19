@@ -1,0 +1,201 @@
+IMPORTANT COMPONENTS OF ANSIBLE
+===============================
+
+1. INVENTORY
+------------
+- A list and grouping of remote servers (INI or YAML format).
+- Tells Ansible where to run tasks.
+- Example: /etc/ansible/hosts
+
+2. PLAYBOOK
+-----------
+- A YAML file that defines tasks to execute on remote servers.
+- Organized into "plays" and "tasks".
+- Tells Ansible what to do.
+
+3. TASK
+-------
+- A single unit of work (e.g., install package, copy file).
+- Building blocks of automation workflows.
+
+4. MODULES
+----------
+- Reusable units that perform specific tasks (e.g., yum, apt, copy, service).
+- Over 3000 built-in modules available.
+- Actual execution logic resides in modules.
+
+5. ROLES
+--------
+- A structured way to group tasks, variables, templates, handlers, etc.
+- Promotes reuse and modularity.
+- Good for complex setups (e.g., a "webserver" role).
+
+6. VARIABLES
+------------
+- Used to store values (like package names, paths).
+- Can be defined in playbooks, inventory, host_vars, group_vars, or via vars_files.
+- Precedence (highest to lowest):
+  1. Command line (-e)
+  2. Playbook vars
+  3. host_vars > group_vars
+  4. Inventory vars
+  5. Role defaults
+
+7. HANDLERS
+-----------
+- Special tasks triggered only when notified (e.g., restart service after config change).
+- Prevent unnecessary actions.
+
+8. TEMPLATES
+------------
+- Jinja2-based templates for dynamic config files.
+- Useful for generating environment-specific configuration.
+
+9. FACTS
+--------
+- Automatically collected system info (e.g., OS, IP, CPU).
+- Can be used in playbooks.
+
+10. TAGS
+--------
+- Used to run only specific parts of a playbook.
+- Run with: `ansible-playbook site.yml --tags "install"`
+
+11. ANSIBLE CONFIGURATION FILE
+------------------------------
+- Main config file: ansible.cfg
+- Controls logging, inventory paths, timeouts, retries, etc.
+- Priority order:
+  1. ANSIBLE_CONFIG (env variable)
+  2. ./ansible.cfg (current directory)
+  3. ~/.ansible.cfg (user home)
+  4. /etc/ansible/ansible.cfg (system-wide)
+
+12. AD-HOC COMMANDS
+-------------------
+- One-liners for quick tasks (e.g., ping, install).
+- Example: `ansible all -m ping`
+
+13. VAULT
+---------
+- Encrypts secrets like passwords and API keys.
+- Keeps sensitive data safe in version control.
+- Usage:
+  - `ansible-vault create secrets.yml`
+  - `ansible-playbook --ask-vault-pass deploy.yml`
+
+14. COLLECTIONS
+---------------
+- Bundles of modules, roles, and plugins.
+- Extend Ansible features (e.g., AWS collection).
+- Locations:
+  - User: ~/.ansible/collections/
+  - System: /usr/share/ansible/collections/
+
+INTERVIEW TIPS
+--------------
+- Be able to write and explain a simple playbook.
+- Explain how roles organize large projects.
+- Know variable precedence.
+- Mention common modules and real-world examples.
+- Understand how Ansible Vault is used.
+- Be ready to explain a 100-server setup and environment handling.
+
+=================================================
+ANSIBLE IMPORTANT LOCATIONS ON RHEL 8+
+=================================================
+
+1. EXECUTABLES
+--------------
+/usr/bin/ansible
+/usr/bin/ansible-playbook
+
+2. CONFIGURATION FILE
+---------------------
+/etc/ansible/ansible.cfg
+
+3. DEFAULT INVENTORY FILE
+--------------------------
+/etc/ansible/hosts
+
+4. MODULE AND LIBRARY FILES
+----------------------------
+/usr/share/ansible/
+
+5. LOG FILE (if enabled)
+------------------------
+/var/log/ansible.log
+
+-------------------------------------------------
+CHEAT SHEET SUMMARY
+-------------------------------------------------
+
+| Component        | Location                              |
+|------------------|----------------------------------------|
+| Executables      | /usr/bin/ansible, /usr/bin/ansible-playbook |
+| Config Files     | /etc/ansible/ansible.cfg, ~/.ansible.cfg     |
+| Inventory        | /etc/ansible/hosts                          |
+| Modules          | /usr/share/ansible/plugins/modules/         |
+| Roles            | /usr/share/ansible/roles/, ~/.ansible/roles/|
+| Logs             | /var/log/ansible.log                        |
+| Collections      | ~/.ansible/collections/                     |
+| Custom Facts     | /etc/ansible/facts.d/                       |
+
+=================================================
+INTERVIEW PREP CHECKLIST
+=================================================
+
+1. PLAYBOOK STRUCTURE
+- Hosts section
+- Variables
+- Tasks and handlers
+
+2. ROLE STRUCTURE
+- folders: tasks/, handlers/, files/, templates/, vars/, defaults/
+
+3. VARIABLE PRECEDENCE
+- Understand order: CLI > playbook vars > host/group vars > role defaults
+
+4. COMMON MODULES
+- Practice: package, copy, template, service, user, debug
+
+5. SECURITY
+- Use of Vault to encrypt secrets
+
+6. ERROR HANDLING
+- Understand: --check (dry-run), --step, retries
+
+7. SCALABILITY
+- Organizing deployments for 100+ servers
+- Handling different environments (dev/stage/prod)
+
+8. SECRETS STRATEGY
+- How to manage API keys and passwords securely
+
+=================================================
+EXAMPLE PLAYBOOK STRUCTURE
+=================================================
+
+---
+- name: Deploy web application
+  hosts: web_servers
+  vars:
+    app_version: 1.4.2
+  tasks:
+    - name: Install package
+      package:
+        name: "myapp-{{ app_version }}"
+        state: present
+      tags: install
+
+    - name: Update config
+      template:
+        src: app.conf.j2
+        dest: /etc/myapp.conf
+      notify: Restart service
+
+  handlers:
+    - name: Restart service
+      service:
+        name: myapp
+        state: restarted

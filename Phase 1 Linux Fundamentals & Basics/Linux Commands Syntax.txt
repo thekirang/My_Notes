@@ -1,0 +1,60 @@
+For Memorising: Command → Flags (short) → Options (long) → Arguments (targets)
+
+### **Command Flags (VRIAN-QOU Acronym)**  
+**"VRIAN-QOU"** (Sounds like "Viking-Ow!") → Covers 90% of flags:  
+
+| Flag | Meaning               | Trick (Memory Hook)           | Example                     |  
+|------|-----------------------|--------------------------------|-----------------------------|  
+| `-v` | Verbose (detailed)    | *"Very noisy!"*                | `tar -xvf file.tar`         |  
+| `-r` | Recursive             | *"Repeat for subfolders."*     | `chmod -R 755 /dir`         |  
+| `-i` | Interactive (prompt)  | *"I ask first!"*               | `rm -i file.txt`            |  
+| `-a` | All (including hidden)| *"Absolutely everything!"*     | `ls -a`                     |  
+| `-n` | Number (limit output) | *"Number of lines."*           | `head -n 5 file.txt`        |  
+| `-q` | Quiet (suppress output)| *"Shhh!"*                     | `wget -q http://example.com`|  
+| `-o` | Output (to file/format)| *"Output here!"*              | `curl -o file.txt URL`      |  
+| `-u` | Update (newer files)  | *"Update only!"*               | `rsync -au src/ dest/`      |  
+
+**Exception:**  
+- **`grep -v`** → invert-match or *"Veto!"* (Exclude matches)  
+  ps aux | grep -v "chrome"  # Hide chrome processes  
+
+---
+
+### **Command Syntax (CLIP-R-VBS Rule)**  
+**Think "Clip Video" for command structure:**  
+
+1. **C**ommand (`ls`, `grep`)  
+2. **L**ong flags (`--all`, `--help`)  
+3. **I**nteractive flags (`-i`, `-v`)  
+4. **P**iping (`|`)  
+5. **R**edirection (`>`, `<`)  
+6. **V**ariables (`VAR=value cmd`)  
+7. **B**ackground (`&`)  
+8. **S**ubcommands (`git commit`)  
+
+**Example:**  
+LANG=C grep -i --color "error" /var/log/syslog | less > errors.txt &  
+- **C**: `grep`  
+- **L**: `--color`  
+- **I**: `-i`  
+- **P**: `| less`  
+- **R**: `> errors.txt`  
+- **V**: `LANG=C`  
+- **B**: `&`  
+
+---
+
+### **Interview Pro Tips**  
+
+2. **For `-v` Confusion:**  
+   - *"Most tools use `-v` for verbose, but `grep` uses it to exclude matches. I remember it as ‘grep vetoes (`-v`) unwanted lines.’"*  
+
+3. **For Syntax:**  
+   - *"I structure commands like a video clip: Command → Flags → Pipes → Redirects → Extras (CLIP-R-VBS)."*  
+
+---
+
+### **Final Mnemonics**  
+- **Flags:** *"VRIAN-QOU (Viking-Ow!)"*  
+- **Syntax:** *"CLIP-R-VBS (Clip Video)"*  
+

@@ -1,0 +1,100 @@
+Hadoop: 
+Hadoop is an open-source software framework for distributed storage and processing of large datasets, commonly referred to as big data
+
+
+HADOOP COMPONENTS OVERVIEW
+==========================
+
+NAMENODE
+--------
+- Keeps track of which file is stored on which DataNodes (does not store actual data).
+- Stores metadata such as file permissions, directory structure, and replication information.
+- When a user wants to read/write a file, the NameNode provides the location of the data.
+- If the NameNode fails, the entire HDFS becomes unavailable.
+
+DATANODE (STORES ACTUAL DATA)
+-----------------------------
+- A worker node that stores actual data blocks.
+- Works under the control of the NameNode.
+- Sends regular heartbeats to the NameNode to indicate it's alive.
+- If a DataNode fails, the NameNode initiates replication from other DataNodes.
+
+SIMPLE ANALOGY: HDFS AS A LIBRARY
+---------------------------------
+- NameNode = Librarian (keeps catalog/index but doesn’t hold books).
+- DataNodes = Bookshelves (store actual books/files).
+
+SECONDARY NAMENODE
+------------------
+- Not a backup for the NameNode!
+- Periodically saves metadata snapshots and merges edit logs with the file system image.
+- Helps reduce load on the NameNode and aids in faster recovery.
+- Does not take over if the NameNode crashes.
+- Analogy: Like a backup assistant librarian who organizes catalog updates for reference.
+
+BACKUP NODE
+-----------
+- An active backup of the NameNode.
+- Maintains a real-time copy of the NameNode’s metadata.
+- Can take over immediately if the NameNode fails.
+- Analogy: A co-librarian with a live mirror of the records.
+
+EDGE NODE
+---------
+- Acts as a gateway for external applications to interact with the Hadoop ecosystem.
+- Typically where client tools and scripts run.
+
+--------------------------------------------------
+
+APACHE SPARK
+============
+- A powerful distributed computing engine for big data processing.
+- Uses in-memory computing whenever possible for speed.
+- Up to 100x faster than Hadoop MapReduce in certain cases.
+- Especially effective for iterative algorithms (e.g., machine learning).
+
+--------------------------------------------------
+
+YARN WORKFLOW (SIMPLIFIED)
+==========================
+
+1) Submit your application to the ResourceManager.
+2) ResourceManager allocates a dedicated ApplicationMaster for your job.
+3) ApplicationMaster analyzes the job and requests required resources (CPU, memory).
+4) ResourceManager assigns containers after considering resource availability.
+5) ApplicationMaster coordinates with NodeManagers to start containers.
+6) Your application runs inside these containers, processing data.
+7) ApplicationMaster monitors execution, handles failures, and may request more resources.
+8) Once completed, ApplicationMaster notifies the ResourceManager and releases containers.
+
+--------------------------------------------------
+
+THE BIG PICTURE: HOW IT ALL FITS TOGETHER
+=========================================
+
+- DATA STORAGE LAYER:
+    * HDFS stores large-scale datasets across many machines.
+
+- RESOURCE MANAGEMENT LAYER:
+    * YARN allows multiple data processing applications to share cluster resources efficiently.
+
+- PROCESSING FRAMEWORKS:
+    * Spark, MapReduce, and others perform distributed computation.
+
+- DATA ACCESS LAYER:
+    * Hive, HBase, and Pig allow users to interact with the data in different ways.
+
+- COORDINATION SERVICES:
+    * ZooKeeper ensures distributed services operate in sync and handle failure gracefully.
+
+- DATA MOVEMENT TOOLS:
+    * Flume, Kafka, and Sqoop help ingest/export data to/from the Hadoop ecosystem.
+
+- WORKFLOW MANAGEMENT:
+    * Oozie automates and manages complex data processing pipelines.
+
+FINAL THOUGHTS
+--------------
+- Hadoop’s power lies in its ecosystem, not just one component.
+- Each tool solves a specific problem in big data management and processing.
+- Mastering Hadoop means understanding which tools to use for which tasks.

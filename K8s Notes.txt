@@ -1,0 +1,137 @@
+Why Kubernetes is Needed?
+--------------------------
+1. Auto scaling and load balancing
+2. Containers cannot communicate directly across hosts without orchestration
+3. Containers must be carefully managed (scheduling, scaling, restarting, etc.)
+
+Features of Kubernetes:
+------------------------
+1. Kubernetes is a container orchestration tool used to manage a cluster of containers across machines
+2. Auto scaling
+3. Self-healing (auto-restarts failed containers)
+4. Load balancing
+5. Platform independent
+6. Fault tolerant (handles node/pod failures)
+7. Rollbacks (revert to previous stable version)
+8. Health monitoring of containers
+9. Batch execution (one-time, sequential, or parallel)
+
+How Kubernetes Works:
+----------------------
+
+A **Kubernetes Cluster** is made of:
+
+* **Master Node(s)**: The brain — manages everything.
+* **Worker Node(s)**: The body — runs your app in containers.
+
+- Kubernetes cluster runs containers on bare metal, VM, cloud instances, or a combination
+- One or more master nodes manage the cluster
+- All other nodes are called worker nodes
+- Master node runs control plane components to manage cluster state
+
+Control Plane Components (Master Node):
+----------------------------------------
+1. kube-apiserver:
+The front desk — accepts instructions (YAML files).
+   - Frontend of the control plane
+   - Receives all REST requests from users (e.g., manifests)
+   - Scales horizontally based on load
+
+2. etcd:
+The memory — stores the cluster state (key-value format).
+   - Key-value store that holds all cluster metadata and state
+   - Highly available and consistent
+
+3. kube-scheduler:
+The planner — decides which node runs which pod.
+   - Assigns pods to nodes based on resource availability and constraints
+   - Makes placement decisions
+
+4. Controller Manager:
+The manager — ensures reality matches our plan (desired state).
+   - Ensures actual state = desired state
+   - Two types:
+     a) Cloud Controller Manager (for cloud environments)
+     b) kube-controller-manager (for non-cloud setups)
+   - Manages:
+     - Node controller
+     - Route controller
+     - Service controller
+     - Volume controller
+
+Worker Node Components:
+------------------------
+1) kubelet:
+The supervisor — takes instructions from master and runs containers.
+   - Agent that runs on each node
+   - Talks to master via port 10255
+   - Executes commands from control plane and reports status
+
+2) Container Runtime (e.g., Docker):
+Actually runs the container.
+   - Pulls container images
+   - Starts/stops containers
+   - Works with kubelet to manage container lifecycle
+
+3) kube-proxy:
+The network guy — gives IPs to pods and routes traffic.
+   - Runs on each node
+   - Assigns IPs to pods (via dynamic IP addressing)
+   - Handles network routing and NAT
+
+Pod:
+----
+- Smallest deployable unit in Kubernetes
+- A pod is a group of one or more tightly coupled containers
+- Runs on a node, controlled by the master
+- Kubernetes only manages pods (not individual containers directly)
+- One pod usually contains one container
+- Containers in a pod share network and storage
+- Cannot start a container outside a pod
+
+Multi-container Pod:
+---------------------
+- Containers share localhost for communication
+- Share volume (persistent or ephemeral)
+- All containers in a pod run together on the same node
+- Pods are deployed atomically (all-or-nothing)
+
+Pod Installation:
+------------------
+- No auto healing or auto scaling by default
+- If a pod crashes, it won't be restarted unless managed by higher-level object
+
+Higher Level Kubernetes Objects:
+---------------------------------
+- ReplicaSet: For scaling and self-healing
+- Deployment: For versioning, rolling updates, and rollback
+- Service: Provides stable networking (ClusterIP, NodePort, LoadBalancer)
+- Volume: For non-ephemeral storage
+
+Important CLI Tools:
+---------------------
+- kubectl: For interacting with the cluster (cloud or local)
+- kubeadm: For setting up Kubernetes clusters (on-premise)
+- kubefed: For hybrid/federated Kubernetes environments
+
+Kubernetes Objects:
+--------------------
+- Objects represent the desired state of your cluster
+- Examples: Pods, Namespaces, ReplicaSets, Secrets, ConfigMaps, Deployments, Jobs, DaemonSets
+
+Each object has:
+- Spec: What you want (desired state)
+- Status: What actually exists (updated by Kubernetes)
+- All objects have a unique name and UID
+
+
+Key Additions
+Ingress – Manages external HTTP/S traffic (alternative to LoadBalancer).
+
+ConfigMaps/Secrets – Decouple configuration from container images.
+
+StatefulSets – For stateful apps (e.g., databases) with stable network/storage.
+
+Horizontal Pod Autoscaler (HPA) – Auto-scales pods based on CPU/memory.
+
+ 

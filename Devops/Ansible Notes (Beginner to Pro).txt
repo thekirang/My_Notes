@@ -1,0 +1,173 @@
+===========================
+Ansible Notes (Beginner to Pro)
+===========================
+
+---------------------------
+1. What is Ansible?
+---------------------------
+- Ansible is an agentless automation tool used for configuration management, application deployment, and orchestration.
+- It uses SSH to connect to managed nodes.
+- Playbooks are written in YAML.
+
+---------------------------
+2. Key Components
+---------------------------
+- Control Node: The machine where Ansible is installed. You run Ansible commands and playbooks from here.
+- Managed Nodes: Remote servers that Ansible controls.
+- Inventory File: Defines the list of managed nodes.
+- Modules: Units of work Ansible can execute (e.g., ping, copy, yum).
+- Playbooks: YAML files containing a series of tasks to execute on managed nodes.
+
+---------------------------
+3. Control Node Setup (Master)
+---------------------------
+
+# Step 1: Install Ansible (RHEL/CentOS/Fedora)
+sudo dnf install -y ansible
+
+# Step 2: Create 'ansible' user (optional, but useful)
+sudo useradd ansible
+sudo passwd ansible
+
+# Step 3: Switch to ansible user
+sudo su - ansible
+
+# Step 4: Generate SSH key
+ssh-keygen
+
+# Step 5: Copy SSH key to Managed Nodes
+ssh-copy-id ansible@<managed_node_ip>
+
+# Step 6: Test SSH Connection
+ssh ansible@<managed_node_ip>
+
+# Step 7: Add hosts to inventory file
+sudo vi /etc/ansible/hosts
+
+Example:
+[group1]
+192.168.1.10
+192.168.1.11
+
+# Step 8: Test connectivity
+ansible all -m ping
+
+---------------------------
+4. Managed Node Setup (Client)
+---------------------------
+
+# Step 1: Create 'ansible' user
+sudo useradd ansible
+sudo passwd ansible
+
+# Step 2: Give 'ansible' sudo privileges
+echo "ansible ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/ansible
+
+# Step 3: Allow password authentication (if needed)
+sudo vi /etc/ssh/sshd_config
+
+Set:
+PermitRootLogin yes
+PasswordAuthentication yes
+
+# Step 4: Restart SSH service
+sudo systemctl restart sshd
+
+---------------------------
+5. Running Ad-Hoc Commands
+---------------------------
+
+# Ping all hosts
+ansible all -m ping
+
+# Run command
+ansible all -m command -a "uptime"
+
+# Use shell module
+ansible all -m shell -a "df -h"
+
+---------------------------
+6. Writing a Basic Playbook
+---------------------------
+
+# Example: install httpd and start service
+
+vi install_httpd.yml
+
+---
+- name: Install and start Apache
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+# Run the playbook
+ansible-playbook install_httpd.yml
+
+---------------------------
+7. Directory Structure Example
+---------------------------
+
+project/
+├── inventory
+├── playbook.yml
+└── roles/
+    └── webserver/
+        ├── tasks/
+        │   └── main.yml
+        ├── handlers/
+        │   └── main.yml
+        └── templates/
+            └── index.html.j2
+
+---------------------------
+8. Ansible Vault (Encrypt secrets)
+---------------------------
+
+# Create encrypted file
+ansible-vault create secrets.yml
+
+# Edit encrypted file
+ansible-vault edit secrets.yml
+
+# Run playbook using vault password
+ansible-playbook secure-playbook.yml --ask-vault-pass
+
+# Encrypt an existing file
+ansible-vault encrypt myvars.yml
+
+---------------------------
+9. Common Modules
+---------------------------
+
+- command: Executes a command (no shell features like pipes)
+- shell: Executes shell commands
+- yum: Installs packages
+- copy: Copies files
+- file: Manages files and permissions
+- service: Manages services
+- user: Manages users
+- cron: Manages cron jobs
+
+---------------------------
+10. Best Practices
+---------------------------
+
+- Use groups in inventory: [web], [db], etc.
+- Avoid using root user directly.
+- Use 'become: yes' instead of hardcoding sudo.
+- Separate logic into roles for reusability.
+- Keep variables and secrets in separate files (and encrypt if needed).
+
+---------------------------
+End of Ansible Notes
+---------------------------

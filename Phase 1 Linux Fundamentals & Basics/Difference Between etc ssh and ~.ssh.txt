@@ -1,0 +1,6 @@
++----------------+-------------------------------+------------------+-----------------------------------------------+
+| Directory      | Purpose                       | Affects          | Key Files                                     |
++----------------+-------------------------------+------------------+-----------------------------------------------+
+| /etc/ssh       | System-wide SSH configuration | All users        | sshd_config, ssh_config, host keys            |
+| ~/.ssh         | Per-user SSH configuration    | Individual user  | id_rsa, authorized_keys, config, known_hosts  |
++----------------+-------------------------------+------------------+-----------------------------------------------+

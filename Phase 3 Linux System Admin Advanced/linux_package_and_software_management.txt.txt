@@ -1,0 +1,199 @@
+Linux Package and Software Management Notes (RHEL 8+)
+====================================================
+
+✅ RPM (Red Hat Package Manager)
+====================================================
+
+Why Use RPM Directly?
+----------------------------------------------------
+- No internet/repo access
+- Installing custom or vendor-provided `.rpm` packages.
+- Fine-grained control (force install, ignore dependencies).
+- Troubleshooting RPM database issues.
+- Vendors provide software only as `.rpm` files. for ex. Oracle
+
+⚠️ Why NOT use RPM daily?
+----------------------------------------------------
+- Does **NOT** resolve dependencies automatically!
+
+----------------------------------------------------
+Common RPM Commands:
+----------------------------------------------------
+- Install an RPM file:         rpm -ivh <package>.rpm
+- Upgrade an RPM file:         rpm -Uvh <package>.rpm
+- Remove a package:            rpm -e <package-name>
+- List installed packages:     rpm -qa
+- Query package info:          rpm -qi <package-name>
+- Verify package installation: rpm -V <package-name>
+- Find package owning a file:  rpm -qf /path/to/file
+
+
+Command	Meaning
+-i	install
+-v	Verbose mode. Shows detailed output during installation. (v = verbose)
+-h	Hash marks (#) during install progress. (h = hash)
+-U	Upgrade a package if installed, else install it. (U = upgrade)
+-e	Erase (remove) 
+-q	Query the RPM database. (q = query)
+-a	All packages. (a = all) — used with -q (like rpm -qa → query all installed packages)
+-i     (with -q)	Information about a package. (i = info) — used like rpm -qi package-name
+-V	Verify package installation (checks files against RPM database). (V = verify)
+-f	File — find which package owns a particular file. (f = file)
+
+----------------------------------------------------
+Practice Workflow (Using RPM Manually):
+----------------------------------------------------
+rpm -ivh nginx-version-x86_64.rpm  
+rpm -qa | grep nginx  
+rpm -qi nginx  
+rpm -e nginx
+
+----------------------------------------------------
+How to Set Up Local Repository (Offline)
+----------------------------------------------------
+
+🧠 Super-Simple Memory Tip:
+
+"Install tools (reposync and createrepo) → Create folders → Download RPMs (using reposync)  → Organize with (createrepo) → Configure repo file → Install offline
+
+1. Install required tools in singe command: reposync and createrepo 
+
+   dnf install -y yum-utils
+   dnf install -y createrepo
+
+2. Create folders:
+   mkdir -p /repo/baseos
+   mkdir -p /repo/appstream
+
+3. Download packages, in above created folders: 
+
+   reposync --repo=BaseOS --download-path=/repo/baseos --download-metadata
+   reposync --repo=AppStream --download-path=/repo/appstream --download-metadata
+
+4. [Optional] Only if:
+
+    -You copied RPMs manually
+
+    -Or want to ensure freshness
+
+ To create a repository index (repodata) inside /repo/baseos and /repo/appstream, run
+   createrepo /repo/baseos
+   createrepo /repo/appstream
+
+5. Configure local repository:
+
+- local.repo = tells DNF where to find local RPMs.
+
+   vi /etc/yum.repos.d/local.repo
+
+   Add the following:
+   [baseos]                       # this is repo ID, keep it simple — no spaces, no capital letters, no hyphens.
+   name=Local BaseOS Repository   # Friendly name — what dnf repolist shows
+   baseurl=file:///repo/baseos    # Must match where your .rpms  locations are.
+   enabled=1                      # 1- enable , 0-disabled
+   gpgcheck=0
+
+   [appstream]
+   name=Local AppStream Repository
+   baseurl=file:///repo/appstream
+   enabled=1
+   gpgcheck=0
+
+6. Clean old cache and refresh repository list:
+   dnf clean all
+   dnf repolist all
+
+7. Install packages offline:
+   dnf install <package-name>
+
+----------------------------------------------------
+🧠 Tiny Tip to Remember:
+----------------------------------------------------
+- **reposync** = downloads RPMs  
+- **createrepo** = organizes RPMs  
+- **local.repo** = tells DNF where to find local RPMs.
+
+----------------------------------------------------
+💡 Pro Tip:
+You can serve `/repo/` over HTTP using Apache or Nginx to create a **private online repo** inside your network.
+
+====================================================
+✅ DNF (Dandified YUM)
+====================================================
+
+About DNF
+----------------------------------------------------
+- High-level tool built on top of RPM.
+- Resolves dependencies automatically.
+- Manages repositories easily.
+- Easier syntax.
+- Preferred for daily use and automation.
+
+🧑‍💻 Remember:  
+DNF is **online** — unless you configure it offline.
+
+----------------------------------------------------
+How to Use DNF with an ISO File (Offline):
+----------------------------------------------------
+mkdir /mnt/dvd  
+mount /dev/cdrom /mnt/dvd
+
+or,
+ Configure local repository:
+
+vi /etc/yum.repos.d/local.repo
+
+Add the following:
+[localRepo]
+name=Local Repository
+baseurl=file:///mnt/dvd
+enabled=1
+gpgcheck=0 
+
+✅ Now you can use `dnf install <package>` without internet access!
+
+----------------------------------------------------
+Common DNF Commands:
+----------------------------------------------------
+- Install a package:         dnf install <package>
+- Remove a package:          dnf remove <package>
+- Update the system:         dnf update
+- Search for a package:      dnf search <keyword>
+- Get info about a package:  dnf info <package>
+- List installed packages:   dnf list installed
+- List available packages:   dnf list available
+- Clean cache:               dnf clean all
+- Enable a repository:       dnf config-manager --set-enabled <repo id>
+- Disable a repository:      dnf config-manager --set-disabled <repo id>
+
+----------------------------------------------------
+Practice Workflow (Using DNF):
+----------------------------------------------------
+dnf search nginx  
+dnf install nginx  
+dnf list installed | grep nginx  
+dnf info nginx  
+dnf update nginx  
+dnf remove nginx
+
+----------------------------------------------------
+Example:
+----------------------------------------------------
+dnf install vim  
+dnf install httpd  
+
+----------------------------------------------------
+Quick Mnemonic:
+----------------------------------------------------
+- "RPM is RAW power. DNF is DELIGHTFUL."
+
+----------------------------------------------------
+🔥 Golden Rule:
+----------------------------------------------------
+| Situation                      | Tool to use  |
+|------------------------------- |--------------|
+| Normal software management     | ✅ Use DNF   |
+| No repo/internet access        | ✅ Use RPM   |
+| Fine control needed            | ✅ Use RPM   |
+| Troubleshooting db issues      | ✅ Use RPM   |
+

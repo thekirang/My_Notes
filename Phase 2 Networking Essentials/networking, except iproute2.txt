@@ -1,0 +1,276 @@
+##########################################
+# ❌ Things iproute2 Does NOT Replace
+# 🔧 But Still Important in Linux Networking
+##########################################
+
+==========================================
+1️⃣ Firewall Management (Security)
+==========================================
+Tools:
+- firewalld (recommended in RHEL/CentOS)
+- nftables
+
+KeyPoints:
+-nftables = New & better Linux firewall (replaces iptables).
+-Rules must be saved (/etc/nftables.conf) to survive reboot
+-To reload the nftables rules after modifying the configuration file /etc/nftables.conf is:
+ nft -f /etc/nftables.conf
+-firewalld = A manager/tool that configures rules for you.
+-nftables = The engine that actually executes those rules.
+
+Notes:
+- firewalld = frontend tool
+- nftables = backend engine
+- Save rules: nft -f /etc/nftables.conf
+
+Examples:
+firewall-cmd --list-all
+nft list ruleset 
+
+
+
+Why?
+iproute2 does not handle packet filtering, port blocking, or stateful firewall logic.
+
+==========================================
+2️⃣ DNS Resolution Tools
+==========================================
+Tools:
+- dig
+
+Full Form: Domain Information Groper
+
+What dig Does:
+It sends a DNS query to a DNS server and shows the detailed response.
+Detailed DNS queries & debugging
+
+Examples:
+dig google.com -p 80 
+dig +stats example.com    >> To see which DNS server dig is using,
+dig -x 8.8.8.8                 >> To perform a reverse lookup (finding the domain name associated with an IP address),
+dig +trace google.com     >> showing how your query reaches the authoritative DNS servers
+
+Why?
+iproute2 only handles IPs (e.g., 192.168.1.1), not domain names (google.com).
+
+How to Remember:
+
+whether to use port or -p ?
+
+port   → Filtering/raw protocols (tcpdump, firewall rules).
+
+-p    → Most CLI tools (nmap, ssh, netcat).
+
+==========================================
+3️⃣ Packet Capture / Traffic Analysis
+==========================================
+Tools:
+- tcpdump
+
+Capture and analyze raw network traffic in real-time
+
+It helps you:
+
+Debug connectivity issues
+
+Monitor live network traffic
+
+Inspect packets for errors or security concerns
+
+Analyze protocols (like HTTP, DNS, etc.)
+
+
+⚠️ Notes
+Run with sudo or root access.
+
+Use filters to avoid capturing too much data.
+
+Basic Syntax:
+tcpdump [options] [filter]
+
+Examples:
+tcpdump -i eth0 port 80    (-i is for inspect)
+
+Why?
+iproute2 doesn’t capture packets.
+
+==========================================
+4️⃣ Network Scanning / Discovery
+==========================================
+Tool:
+- nmap
+
+What is nmap?
+its Network Mapper, network scanning tool used to:
+
+Discover hosts and devices on a network
+
+Scan for open ports
+
+Detect running services and versions
+
+Identify the operating system
+
+Perform basic vulnerability assessment
+
+It’s a go-to tool for network administrators, security professionals, and penetration testers.
+
+Basic Syntax:
+
+nmap [options] [target]
+
+Examples:
+
+here -s is for scan
+
+1. Ping Scan (find live hosts)
+nmap -sn 192.168.1.0/24
+
+2. SYN Scan (Stealth Scan)
+nmap -sS 192.168.1.100
+
+3. TCP Connect Scan
+nmap -sT 192.168.1.100
+
+4. UDP Scan
+nmap -sU 192.168.1.100
+
+5. Service Version Detection
+nmap -sV 192.168.1.100
+
+6. Aggressive Scan (OS, version, script, traceroute)
+nmap -A 192.168.1.100
+
+7. Scan Specific Port
+nmap -p 80 192.168.1.100
+
+8. Scan All Ports
+nmap -p- 192.168.1.100
+
+9. Save Output in All Formats
+nmap -oA scan_results 192.168.1.100
+
+Why?
+For discovering live hosts, scanning open ports, vulnerability checks — beyond iproute2's job.
+
+When to Use nmap
+"Who’s on my network?" → nmap 192.168.1.0/24
+
+"Is my website port (80/443) open?"       → nmap -p 80,443 192.168.1.100
+
+"Why can’t I connect to my linux server?" → nmap -p 22     192.168.1.100 
+
+==========================================
+5️⃣ DHCP / Dynamic IP Configuration
+==========================================
+Tools:
+- NetworkManager
+
+DHCP (dynamic IP) is handles by NetworkManager 
+
+DHCP stands for Dynamic Host Configuration Protocol.
+
+is task is to,
+
+- Auto-assigns:
+  ✅ IP address  
+  ✅ Subnet mask  
+  ✅ Gateway  
+  ✅ DNS servers  
+
+💡 Trick: Your PC gets IP info *automatically* from your DHCP server.
+
+
+Why?
+iproute2 configures static IPs. It cannot request IP from a DHCP server.
+
+==========================================
+6️⃣ Hostname & DNS Configuration
+==========================================
+Tools/Files:
+- /etc/hosts
+- /etc/resolv.conf
+- hostnamectl
+
+Examples:
+hostnamectl set-hostname server1
+
+here,
+hostnamectl: The tool.
+
+set-hostname: The command.
+
+server1: The new hostname.
+
+Why?
+Name resolution setup (DNS servers, local hostnames) is outside iproute2’s role.
+
+
+==========================================
+7️⃣  NetworkManager Tools
+==========================================
+Tools:
+- nmcli
+&
+-DHCP
+
+✅ nmcli = Command-line version of your network settings.
+✅ Controls Wi-Fi, Ethernet, VPNs, hotspots.
+✅ Works even without a GUI (great for servers)
+
+
+>    Aspect                  	 device	                                con
+What it represents	Hardware interface (e.g., eth0).	Software profile (e.g., "Home-WiFi").
+
+Examples:
+nmcli device show                 >> Displays detailed information about all network interfaces (devices).
+nmcli device status               >> Shows a quick status overview of all network devices.
+nmcli device connect eth0         >> Forces NetworkManager to activate/connect the Ethernet interface 
+                                     eth0.
+nmcli con show                    >> Lists all saved connection profiles.
+nmcli con up "connection 1"       >> Activates (brings up) a specific named connection.
+journalctl -u NetworkManager      >> Views logs for NetworkManager (useful for debugging).
+
+
+Why?
+Used in GUI systems for dynamic interface, DNS, and routing configuration — abstracted away from iproute2.
+
+
+
+🚀 When to Use Which?
+Debugging DNS? → dig
+
+Checking open ports? → nmap
+
+Inspecting live traffic? → tcpdump
+
+Need a user-friendly firewall? → firewalld (RHEL)
+
+Want granular firewall rules? → nftables
+
+💡 Pro Tip
+These tools work together! Example workflow:
+
+Use dig to check DNS.
+
+Use nmap to scan the target.
+
+Use tcpdump to capture traffic.
+
+Block unwanted traffic with nftables/firewalld.
+
+
+==========================================
+✅ Summary: When iproute2 Is Not Enough
+==========================================
+
+| Task                     | Use Tool(s)                                |
+|--------------------------|--------------------------------------------|
+| Firewall rules           | firewalld, iptables, nftables              |
+| DNS lookups              | dig, nslookup, host                        |
+| Packet capture           | tcpdump, Wireshark                         |
+| Network scanning         | nmap                                       |
+| DHCP client              | dhclient, NetworkManager, systemd-networkd |
+| Hostname/DNS config      | /etc/hosts, /etc/resolv.conf, hostnamectl  |
+| VPN/Tunnels              | openvpn, wireguard, ipsec                  |
+| GUI/CLI auto config      | nmcli, nmtui                               |

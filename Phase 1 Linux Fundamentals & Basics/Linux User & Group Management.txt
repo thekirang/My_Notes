@@ -1,0 +1,156 @@
+============================
+Linux User & Group Management 
+============================
+
+👤 USER MANAGEMENT
+------------------
+
+=== Create User ===
+useradd [username]                  # Basic user (no home dir)
+useradd -m [username]               # With home directory (/home/username)
+useradd -m -s /bin/bash [username]  # With home dir + Bash shell
+useradd -u 1005 -g devs [username]  # Custom UID & primary group
+
+=== Set/Change Password ===
+passwd             # Change your own password
+passwd [username]  # Set password (root required for others)
+
+=== Modify User ===
+usermod -l newname oldname       # Rename user
+usermod -aG groupname username   # Add to group (preserves existing groups)
+usermod -G groupname username    # Keep this group only and removes from all secondary group memberships.
+usermod -L username              # Lock account
+usermod -U username              # Unlock account
+
+💡 Memory Trick:
+- "-aG = Append to Group (without -a, it removes other groups!)"
+- "mod -aG" = Append groups
+- "mod -G" = Overwrite groups
+
+=== Delete User ===
+userdel [username]     # Delete user (keeps home dir)
+userdel -r [username]  # Delete user + home dir (irreversible!)
+
+
+👥 GROUP MANAGEMENT
+-------------------
+
+=== Create Group ===
+groupadd [groupname]
+groupadd -g 1234 [groupname]  # Custom GID
+
+💡 Memory Trick:
+- "aG = append to group"
+- Don't forget `-a` or you'll remove user from other secondary groups!
+
+Example:
+usermod -aG devteam alice  # Add alice to group 'devteam'
+
+=== Remove User from Group ===
+gpasswd -d [username] [groupname]
+Example:
+gpasswd -d alice devteam
+
+=== Change Primary Group ===
+usermod -g [new_primary_group] [username]
+
+❗ Don’t confuse with:
+usermod -G groupname username
+- -g = Primary group (used for file ownership) and GID
+- -G = Secondary groups (additional) in usermod only
+
+=== View Groups ===
+groups [username]       # Show user's groups
+id [username]           # Show UID, GID, and group IDs
+getent group            # List all system groups
+cat /etc/group          # Alternative method
+
+=== Delete Group ===
+groupdel [groupname]
+
+
+🔐 PASSWORD AGING (chage)
+-------------------------
+chage -l [username]          # Check current policy
+chage -M 30 [username]       # Max days between password changes
+chage -m 7 [username]        # Min days before password change
+chage -W 5 [username]        # Warn user 5 days before expiry
+chage -d 0 [username]        # Force password reset on next login
+
+💡 Memory Trick:
+"M-m-W" = Max, min, Warn
+
+
+
+🧑‍💼 sudo & su
+--------------
+
+=== Switch User (su) ===
+su - [username]     # Login as user (load environment)
+su -                # Become root (needs root password)
+
+=== Grant sudo Access ===
+
+Method 1: Add User to the 'wheel' Group (Recommended)
+-----------------------------------------------------
+sudo usermod -aG wheel [username]
+
+- In RHEL 8+, the 'wheel' group is pre-configured for sudo access.
+- After adding, user must re-login for changes to apply.
+- By default, user must enter **their own password** when using sudo.
+
+Group-based Example:
+%wheel ALL=(ALL) NOPASSWD: ALL   # Passwordless sudo for all wheel group users
+
+⚠️ Use with caution — only if you trust the user and want convenience.
+
+Method 2: Edit sudoers File via visudo (Advanced)
+-------------------------------------------------
+sudo visudo
+
+This opens /etc/sudoers safely to avoid syntax errors.
+
+Example Entry:
+username ALL=(ALL) ALL
+
+This gives the user full sudo access on all hosts.
+
+📘 Sudoers Syntax:
+<user> <host> = (<runas>) <options>: <commands>
+
+  - <user>    = Who the rule applies to
+  - <host>    = On which machines (usually ALL)
+  - (<runas>) = Which user(s) commands can run as (usually ALL)
+  - <options> = Optional flags (e.g., NOPASSWD: )
+  - <commands>= Allowed commands (ALL = any command)
+
+
+Key Difference: sudo vs su
+--------------------------
+- sudo [command] = Run a single command as root (needs user’s password)
+- su -           = Switch to root shell (needs root password)
+
+
+
+📜 QUICK REFERENCE TABLE
+------------------------
+| Task                      | Command                          |
+|---------------------------|----------------------------------|
+| Create user with home dir | useradd -m -s /bin/bash alice    |
+| Add to group              | usermod -aG devs alice           |
+| Lock account              | usermod -L alice                 |
+| List groups               | groups alice                     |
+| Force password reset      | chage -d 0 alice                 |
+| Delete user + home dir    | userdel -r alice                 |
+
+
+
+🎯 MEMORY TRICKS SUMMARY
+------------------------
+1. User: "add -m, mod -aG, del -r" = Create, Modify, Delete
+2. Groups: "-aG = Append (no -a = overwrite!)"
+3. chage: "M-m-W" = Max, min, Warn
+4. groupadd = add new crew
+5. gpasswd -d = delete user from group
+6. -g = primary group, -G = secondary groups
+7. groups = show all groups of user

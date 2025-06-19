@@ -1,0 +1,108 @@
+✅ JENKINS INTERVIEW NOTES (POINT-WISE & SIMPLE)
+
+1. WHAT IS JENKINS?
+- Open-source automation tool.
+- Helps in building, testing, and deploying software.
+- Acts like a robot that performs DevOps tasks automatically.
+
+2. WHY USE JENKINS?
+- Saves time by automating builds/tests.
+- Finds bugs early through continuous testing.
+- Supports CI/CD (Continuous Integration/Delivery).
+- Works with tools like Git, Docker, Maven, AWS, etc.
+
+3. KEY JENKINS TERMINOLOGIES:
+- Job/Project: A task Jenkins performs (build or test code).
+- Build: The actual task execution (compile/test).
+- Pipeline: Sequence of steps for Build → Test → Deploy.
+- Jenkinsfile: File containing pipeline steps (written in Groovy).
+- Node: A machine (Master or Agent) where tasks run.
+- Plugin: Add-on to extend Jenkins features (Git, Docker, etc.).
+
+4. JENKINS ARCHITECTURE:
+- Master Node: Controls Jenkins and assigns tasks.
+- Agent Node: Performs the actual work (build/test).
+
+Flow: Developer → Git → Jenkins Master → Agent → Build/Test/Deploy → Server
+
+5. HOW JENKINS WORKS (STEPS):
+1. Jenkins is installed on a server.
+2. Connected to source code repository (e.g., GitHub).
+3. Jenkins detects code changes (commit/push).
+4. Pulls code and runs pipeline steps.
+5. Sends success/failure report to developer/team.
+
+6. JENKINS PIPELINE (EXAMPLE JENKINSFILE):
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps { echo 'Building...' }
+        }
+        stage('Test') {
+            steps { echo 'Testing...' }
+        }
+        stage('Deploy') {
+            steps { echo 'Deploying...' }
+        }
+    }
+}
+
+7. TYPES OF JENKINS JOBS:
+- Freestyle Job: GUI-based, simple, good for beginners.
+- Pipeline Job: Written as code, more flexible and powerful.
+
+8. TRIGGERING JENKINS JOBS:
+- Automatically: via Git push (webhook), or schedule (cron).
+- Manually: using "Build Now" button in Jenkins UI.
+
+9. COMMON JENKINS PLUGINS:
+- Git Plugin: Connects to GitHub/GitLab.
+- Slack Plugin: Sends notifications.
+- Docker Plugin: Builds Docker images.
+- Email Plugin: Sends email alerts.
+- Pipeline Plugin: Enables pipeline functionality.
+
+10. CI/CD IN JENKINS:
+- Continuous Integration (CI): Automatically test code on every change.
+- Continuous Delivery/Deployment (CD): Automatically deploy code if tests pass.
+
+11. REAL-LIFE ANALOGY:
+- Jenkins is like a kitchen assistant:
+  - You give it a recipe (Jenkinsfile)
+  - It collects ingredients (code)
+  - Cooks (build/test)
+  - Serves the dish (deploy)
+  - Informs you if anything fails!
+
+12. BEST PRACTICES:
+- Use Jenkinsfile (Pipeline as Code).
+- Use plugins only as needed.
+- Avoid hardcoding credentials (use Jenkins credentials manager).
+- Keep builds modular and simple.
+- Clean up old builds/logs regularly.
+
+13. COMMON INTERVIEW QUESTIONS:
+
+Q: What is Jenkins?
+A: An automation tool for CI/CD.
+
+Q: What is a Jenkins Pipeline?
+A: A series of automated steps like build, test, deploy.
+
+Q: What is Jenkinsfile?
+A: Script file (Groovy) that defines pipeline steps.
+
+Q: Difference between Freestyle and Pipeline jobs?
+A: Freestyle = GUI-based, simple. Pipeline = Code-based, powerful.
+
+Q: How does Jenkins integrate with Git?
+A: Pulls code and triggers jobs when changes are made.
+
+Q: What are Plugins in Jenkins?
+A: Add-ons for tools like Docker, Git, Slack, etc.
+
+Q: How are Jenkins jobs triggered?
+A: Automatically (Git webhook/schedule) or manually.
+

@@ -1,0 +1,30 @@
++----------------------------+----------------------------+ 
+|        Sender Side         |       Receiver Side        |
++----------------------------+----------------------------+
+| 1. Application Layer       | 7. Application Layer       |  } 
+| 2. Presentation Layer      | 6. Presentation Layer      |  } ← Software
+| 3. Session Layer           | 5. Session Layer           |  }
+| 4. Transport Layer         | 4. Transport Layer         |  } ← Interface (Soft+Hard)
+| 5. Network Layer           | 3. Network Layer           |  }
+| 6. Data Link Layer         | 2. Data Link Layer         |  } ← Hardware
+| 7. Physical Layer          | 1. Physical Layer          |  } 
++----------------------------+----------------------------+
+             ↓____________________________↑
+              
+Short:  AP ST NDP
+
+1. **Physical Layer**: Deals with the actual physical connection between devices, like cables or wireless signals.
+
+2. **Data Link Layer**: Handles how data is sent over the physical connection, including addressing and error detection.
+
+3. **Network Layer**: Takes care of finding the best path for data to travel through different networks using addresses (like IP addresses).
+
+4. **Transport Layer**: Manages how data is sent and received between devices reliably and accurately. segmentation of data is carried out here
+
+5. **Session Layer**: Sets up and maintains connections between applications on different devices.
+
+6. **Presentation Layer**: Deals with how data is formatted, encrypted, or compressed for transmission.
+
+7. **Application Layer**: Provides interfaces for software applications to use network services like email or web browsing.
+
+Each layer builds on the one below it, making sure data travels smoothly from one device to another across networks, like a step-by-step instruction manual for communication.

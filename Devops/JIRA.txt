@@ -1,0 +1,46 @@
+
+JIRA SHORT NOTES FOR INTERVIEW
+==============================
+
+WHAT IS JIRA?
+-------------
+- JIRA is a project management and issue tracking tool developed by Atlassian.
+- Commonly used for bug tracking, task management, and agile project workflows.
+
+CORE FEATURES
+-------------
+- Issue Tracking: Track bugs, tasks, and user stories.
+- Project Management: Plan, track, and manage agile software projects.
+- Custom Workflows: Define steps from 'To Do' to 'Done'.
+- Scrum & Kanban Boards: Visual boards to manage tasks and sprints.
+- Reports & Dashboards: Track project performance using burndown charts, velocity, etc.
+- Permissions: Role-based access control for teams.
+
+COMMON ISSUE TYPES
+------------------
+- Bug: Problem that needs to be fixed.
+- Task: General work item.
+- Story: End-user requirement.
+- Epic: Large body of work that can be broken into stories.
+- Sub-task: Smaller unit of work under a parent issue.
+
+JIRA WORKFLOW (BASIC)
+---------------------
+1. Create an issue (task, bug, story)
+2. Assign it to a user
+3. Transition through statuses: To Do → In Progress → Done
+4. Add comments, attachments, and log time
+5. Close or resolve the issue
+
+TERMINOLOGY
+-----------
+- Issue: Any task, bug, or work item in JIRA
+- Project: Collection of issues under a specific goal or product
+- Board: Visual representation of tasks (Scrum or Kanban)
+- Sprint: Time-boxed iteration for agile development
+
+INTERVIEW TIPS
+--------------
+- Be ready to explain how you used JIRA in your previous projects.
+- Mention any experience with Scrum/Kanban boards or creating custom workflows.
+- Highlight collaboration features like assigning tasks, commenting, and tagging team members.

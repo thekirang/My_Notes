@@ -1,0 +1,39 @@
+Firewalld stores its configurations in /etc/firewalld/ 
+
+#Installation
+sudo yum install firewalld -y    # Install firewalld package using yum package manager
+sudo firewall-cmd --state        # firewall engine inside firewalld is actually applying rules correctly or not 
+
+# Basic Control
+sudo systemctl start firewalld    # Start the firewalld service immediately
+sudo systemctl enable firewalld    # Enable firewalld to start automatically at system boot
+sudo systemctl stop firewalld    # Stop the firewalld service
+sudo systemctl status firewalld  # Check current state of firewalld (running/not running)
+
+# Service Management
+sudo firewall-cmd --add-service=ssh --permanent    # Permanently allow SSH connections (port 22)
+sudo firewall-cmd --add-service=http --permanent    # Permanently allow HTTP traffic (port 80)
+sudo firewall-cmd --add-service=nfs --permanent    # Permanently allow NFS file sharing service
+sudo firewall-cmd --remove-service=ftp --permanent    # Permanently remove FTP service access
+
+# Port Management
+sudo firewall-cmd --add-port=8080/tcp --permanent    # Permanently open TCP port 8080 for custom applications
+sudo firewall-cmd --remove-port=3306/tcp --permanent    # Permanently close TCP port 3306 (MySQL default port)
+
+# IP Management
+sudo firewall-cmd --add-source=192.168.1.0/24 --permanent    # Permanently allow all traffic from 192.168.1.0/24 subnet
+sudo firewall-cmd --remove-source=10.0.0.5 --permanent    # Permanently block traffic from specific IP 10.0.0.5
+
+# Apply & Verify
+sudo firewall-cmd --reload    # Reload firewall rules to apply permanent changes without restart
+sudo firewall-cmd --list-all    # List all active firewall rules and settings and to verify all changes saved
+
+# Emergency
+sudo firewall-cmd --panic-on    # Enable panic mode - BLOCK ALL incoming connections (emergency lockdown)
+sudo firewall-cmd --panic-off    # Disable panic mode - return to normal operation
+
+# Key Notes:
+# --permanent makes changes persistent across reboots (must use --reload to activate)
+# Without --permanent, changes are temporary and lost on reload/reboot
+# Always verify changes with --list-all or specific listing commands
+# Panic mode is for emergencies only - it blocks ALL incoming traffic

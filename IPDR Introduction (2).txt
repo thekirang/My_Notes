@@ -1,0 +1,22 @@
+My current job depends on a client project, and it's not clear if the contract will be renewed. So, I'm looking for a more stable role where I can grow and build my career long-term
+
+
+
+
+"In my current role, we have Hadoop cluster consisting of 99 nodes, 
+with a total storage capacity of around 10 petabytes.
+ To effectively monitor the health and performance of the cluster,
+ we’ve integrated Grafana as our primary monitoring tool. 
+In Grafana, we keep an eye on data loading, writing, and extraction activities to ensure everything is functioning smoothly.
+
+I’ve been actively involved during go-live activities at multiple sites,
+ where I was responsible for validating incoming data formats
+
+We’ve also structured our data pipeline using clearly defined landing and reconciliation paths. 
+The reconciliation path, for instance, is used to validate the receipt of files — typically around 100 files — sent by the SNOC or collector nodes.
+
+I handle collector-wise data for sources like CGF, CGNAT, and EDR, which we store in Hadoop’s Hive tables.
+ For further processing, especially for the nodal teams, we utilize Apache Spark jobs to transform and prepare the data as per their requirements.
+
+These Spark jobs are orchestrated and scheduled using Apache Airflow, which helps automate workflows and 
+ensures timely execution and monitoring of all jobs."

@@ -1,0 +1,56 @@
+# LVM SETUP IN 6 STEPS (Interview Ready)
+
+Linux detects the physical disk
+
+Automatically appears as /dev/sdX (or /dev/nvme0n1, /dev/vdb, etc.)
+
+You can see it with lsblk or fdisk -l before running any LVM commands.
+
+
+1. CREATE PHYSICAL VOLUME
+   pvcreate /dev/sdX                # Initialize disk for LVM
+   pvs                              # Verify creation
+
+
+###########Actual Naming starts from here#######
+
+2. CREATE VOLUME GROUP
+   vgcreate vg_name /dev/sdX         # Create VG named 'vg_name'
+   vgs                               # Verify VG
+
+3. CREATE LOGICAL VOLUME  
+   lvcreate -n lv_name -L 10G vg_name   # Create 10GB LV  
+OR 
+   lvcreate -n lv_name -L 10G /dev/vg_name  # Create 10GB LV  
+   lvs                                  # Verify LV  
+
+**To add (not set) 15GB to the existing 10GB LV, use:  
+   lvextend -r -L +15G /dev/vg_name/lv_name      # Note the "+" sign  
+   >> then Total LV will be 25G  
+
+**To reduce 5GB from the current LV size (e.g., from 25GB to 20GB), use:  
+   lvreduce -r -L -5G /dev/vg_name/lv_name       # Note the "-" sign  
+   >> then Total LV will be 20G  
+
+
+4. FORMAT FILESYSTEM
+   mkfs.ext4 /dev/vg_name/lv_name       # Format as ext4
+   # Alternatives: mkfs.xfs, mkfs.btrfs
+
+5. CREATE MOUNT POINT
+   mkdir /mnt/mount_point               # Create directory
+
+6. MOUNT THE VOLUME
+   mount /dev/vg_name/lv_name /mnt/mount_point
+   mount | grep lv_name               # Verify mount
+
+# OPTIONAL: PERSISTENT MOUNT (fstab)
+   go to /etc/fstab 
+   add this,
+  /dev/vg_name/lv_name  /mnt/mount_point  ext4  defaults  0 0
+
+--------------------------------------------------------------------------------------
+
+# Always use '-r' for safe extension:
+lvextend -r -L +5G /dev/vg_name/lv_name  # Auto-resizes filesystem
+

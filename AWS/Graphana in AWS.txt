@@ -1,0 +1,151 @@
+
+# Step-by-Step Guide
+## 1. Install and Start Grafana
+sudo yum update -y
+sudo yum install -y https://dl.grafana.com/oss/release/grafana-10.0.0-1.x86_64.rpm
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+## 2. Install Apache (Optional)
+# If you want to serve CSV files via HTTP, install and start Apache:
+sudo yum install -y httpd
+sudo systemctl enable httpd
+sudo systemctl start httpd
+
+## 3. 9.Then run below script to fetch data from remote server (Passwordless authentication is Mandatory)      
+#!/bin/bash
+for server in 65.0.45.213; do    
+    ssh -i /home/ec2-user/.ssh/id_rsa ec2-user@$server "ls -lrth /var" >> /usr/share/grafana/public/output.csv
+
+done
+
+OR
+
+ Place CSV File in Grafana Public Directory
+cd /usr/share/grafana/public/
+sudo vi business.csv  # OR use 'cat > business.csv' to create the file
+sudo chmod 777 business.csv  # Ensure it's accessible
+ls -ld business.csv  # Verify permissions
+pwd  # Confirm the location
+
+## 4. Enable CSV Plugin in Grafana
+# Backup the grafana.ini file:
+sudo cp /etc/grafana/grafana.ini /etc/grafana/grafana.ini_bkp
+
+# Edit grafana.ini to allow local CSV data:
+sudo vi /etc/grafana/grafana.ini
+# Add the following at the bottom:
+[plugin.marcusolsson-csv-datasource]
+allow_local_mode = true
+
+# Verify the change:
+tail /etc/grafana/grafana.ini
+
+## 5. Restart Grafana
+sudo systemctl restart grafana-server
+
+## 6. Add CSV as a Data Source in Grafana
+# Open Grafana in a browser: http://<EC2-Public-IP>:3000
+# Log in (default: admin/admin)
+# Go to Configuration > Data Sources
+# Add a CSV Data Source (marcusolsson-csv-datasource)
+# In Path, enter: /usr/share/grafana/public/business.csv
+# Save and Test.
+
+## 7. Create a Dashboard
+# Go to Create > Dashboard
+# Add a new panel
+# Select CSV Data Source
+# Choose the business.csv file and configure visualization (table, graph, etc.)
+
+## Now, your CSV file is accessible via Apache HTTP Server
+# Move CSV file to Apache Web Directory
+sudo mv /usr/share/grafana/public/business.csv /var/www/html/
+sudo chmod 644 /var/www/html/business.csv  # Ensure the file is readable
+sudo chown apache:apache /var/www/html/business.csv
+
+# Verify Apache is Serving CSV Files
+curl http://localhost/business.csv
+
+# (Optional) Configure Apache to Serve CSV with Correct MIME Type
+sudo vi /etc/httpd/conf/httpd.conf
+# Add the following line at the bottom:
+# AddType text/csv .csv
+
+# Restart Apache to apply changes
+sudo systemctl restart httpd
+
+# Now, your CSV file is accessible via:
+# http://<EC2-Public-IP>/business.csv
+
+---------------------
+# Step 1: Install Apache (HTTPD)
+sudo yum install -y httpd
+
+# Step 2: Start and Enable Apache
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# Step 3: Configure Firewall (If Required)
+sudo firewall-cmd --add-service=http --permanent
+sudo firewall-cmd --reload
+
+# Step 4: Place CSV File in Apache Web Directory
+sudo mv /usr/share/grafana/public/business.csv /var/www/html/
+sudo chmod 644 /var/www/html/business.csv  # Ensure the file is readable
+sudo chown apache:apache /var/www/html/business.csv
+
+# Now, your CSV file is accessible via:
+# http://<EC2-Public-IP>/business.csv
+
+# Step 5: Verify Apache is Serving CSV Files
+curl http://localhost/business.csv
+
+# Step 6: (Optional) Configure Apache to Serve CSV with Correct MIME Type
+sudo vi /etc/httpd/conf/httpd.conf
+# Add the following line at the bottom:
+# AddType text/csv .csv
+
+# Restart Apache to apply changes
+sudo systemctl restart httpd
+
+-----------------------------------------------------
+
+### 5. Install Grafana (On Master)
+
+
+sudo yum install -y https://dl.grafana.com/oss/release/grafana-10.0.0-1.x86_64.rpm
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+
+### 6. Run the Data Collection Script (On Master)
+Create a  script to collect uptime from multiple EC2 instances:
+
+
+#!/bin/bash
+for server in 65.0.45.213; do
+    ssh -i /home/ec2-user/.ssh/id_rsa ec2-user@$server "uptime" >> output.csv
+done
+
+
+Make it executable:
+
+
+chmod +x script.sh
+
+
+Run the script:
+
+
+./script.sh
+
+
+### 7. Verify Data Collection
+Check the collected data:
+
+
+cat output.csv
+
+
+If uptime values are recorded, the script is working. ✅

@@ -1,0 +1,117 @@
+CEPH ARCHITECTURE
+-----------------
+- RADOS: Handles storing your data across multiple machines.
+- MONs (Monitors): Track which servers are alive and working properly.
+- OSDs (Object Storage Daemons): 
+    * Actual storage units. 
+    * Each manages one disk drive. 
+    * Store data and communicate with each other.
+- MDSs (Metadata Servers): 
+    * Track file locations when using Ceph as a file system (CephFS).
+- CRUSH Algorithm:
+    * A smart map that calculates where to store data.
+    * Faster than using a central lookup table.
+- Pools:
+    * Separate storage areas with different policies (e.g., replication).
+- Placement Groups (PGs):
+    * Group objects for better data management and efficiency.
+
+STORAGE TYPES
+-------------
+- Object Storage (RADOSGW): 
+    * Stores data as objects with metadata.
+    * Similar to Amazon S3.
+    * Good for images, videos, and backups.
+- Block Storage (RBD): 
+    * Provides virtual hard drives (like AWS EBS).
+    * Good for databases and virtual machines.
+- File Storage (CephFS): 
+    * Acts like a shared file system.
+    * Similar to NFS, accessible by many computers.
+
+DATA MANAGEMENT
+---------------
+- Replication:
+    * Copies data across multiple machines for safety.
+- Erasure Coding:
+    * Space-efficient redundancy.
+    * Works like RAID.
+- Data Scrubbing:
+    * Regular data health checks and correction of corruptions.
+- Self-healing:
+    * Automatically restores data when issues are detected.
+
+ADMINISTRATION SKILLS
+=====================
+
+DEPLOYMENT AND CONFIGURATION
+----------------------------
+- Deployment Tools:
+    * Tools like `ceph-deploy` or `cephadm` for setting up the cluster.
+- Cluster Sizing:
+    * Plan servers/disks based on capacity and performance needs.
+- Network Configuration:
+    * Ensure efficient communication between Ceph components.
+
+MONITORING AND TROUBLESHOOTING
+------------------------------
+- Ceph Dashboard:
+    * Web UI showing health and metrics of the cluster.
+- Health Checks:
+    * Commands and tools to verify system functionality.
+- Troubleshooting:
+    * Diagnose and fix issues quickly.
+- Log Analysis:
+    * Review logs for problem investigation.
+
+SCALING AND MANAGEMENT
+----------------------
+- Adding/Removing OSDs:
+    * Safely manage storage disks in the cluster.
+- Pool Management:
+    * Create and configure pools for specific workloads.
+- Cluster Upgrades:
+    * Perform version upgrades with minimal/no downtime.
+- Balancing:
+    * Ensure even distribution of data across OSDs.
+
+---
+
+CEPH MONITORING PRACTICES
+=========================
+
+COMMON COMPONENTS
+-----------------
+- Monitors (MON)
+- Managers (MGR)
+- OSDs
+- MDS (Metadata Servers)
+
+CEPH CLUSTER LAYOUT AND STATUS COMMANDS
+---------------------------------------
+- View cluster status:
+    `ceph -s`
+- Check disk usage and pool stats:
+    `ceph df detail`
+- View OSD layout and status:
+    `ceph osd df tree` or `ceph osd tree`
+- Check for down OSDs:
+    `ceph osd df tree | grep "down"`
+
+OSD MAINTENANCE
+---------------
+- Identify OSDs to replace.
+- Mark OSD as out before replacement.
+- Coordinate data rebalancing.
+- Ensure minimal disruption during OSD repair.
+
+PRACTICAL EXPERIENCE HIGHLIGHTS
+===============================
+
+- Monitored Ceph cluster health using commands like `ceph -s` and `ceph df detail`, ensuring high availability and performance.
+- Managed OSDs and cluster layout; identified issues by filtering down OSDs, leading to effective resolution and maintenance.
+- Replaced and repaired faulty OSDs by marking them as out, coordinating data rebalancing, and minimizing cluster disruption.
+
+- Experienced in monitoring Ceph cluster health for high availability and optimal performance.
+- Skilled in managing OSDs and addressing issues like downed OSDs effectively.
+- Proficient in replacing and repairing faulty OSDs while minimizing cluster impact.

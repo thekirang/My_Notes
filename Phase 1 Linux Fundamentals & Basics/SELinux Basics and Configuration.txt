@@ -1,0 +1,140 @@
+SELinux (Security-Enhanced Linux)
+A permission enforcer for mandatory access control (MAC).
+
+Key Features
+- Primary Role: Mandatory Access Control (MAC)
+- Focus: Process/file permissions & access control
+- Operation: Blocks unauthorized actions (e.g., Apache accessing /home/)
+- Enforcement: Kernel-level restrictions
+- Analogy: "Strict bouncer checking IDs for every action"
+
+Protection Against:
+- Privilege escalation
+- Service misconfigurations
+- Unauthorized file access
+
+SELinux Modes
+
++-------------+-----------------------------------------------+------------------------------------------+
+| Mode        | Description                                   | When to Use                              |
++-------------+-----------------------------------------------+------------------------------------------+
+| Enforcing   | Blocks unauthorized actions (default mode)    | Production systems                       |
+| Permissive  | Logs violations but doesn’t block             | Debugging or auditing                    |
+| Disabled    | SELinux completely off (requires reboot)      | Last resort (not recommended)            |
++-------------+-----------------------------------------------+------------------------------------------+
+
+
+Essential Commands
+
+Check Status:
+- getenforce  - one word output
+
+- sestatus    - detailed output
+
+Temporary Changes (No Reboot):
+- sudo setenforce 1   # Enforcing
+- sudo setenforce 0   # Permissive
+
+Permanent Changes (Requires Reboot):
+- Edit /etc/selinux/config
+  Change: SELINUX=enforcing (or permissive, disabled)
+- Reboot: sudo reboot
+
+View SELinux Denials:
+ausearch -m avc -ts today | sealert                                                #Requires setroubleshoot installed: sudo yum install setroubleshoot 
+( trick to remember -m avc -ts is Monitor All Violations, Checking Time-Stamps)           
+
+# Change context (e.g., for web files)
+sudo chcon -t httpd_sys_content_t /path/to/file
+Here,
+Change context (e.g., for web files)
+
+sudo chcon -t httpd_sys_content_t /path/to/file
+
+Explanation:
+
+chcon → "Change Context" (Modifies SELinux security labels).
+
+-t → Type
+
+httpd_sys_content_t → The context type.
+
+Breakdown of httpd_sys_content_t:
+
+httpd → Service Name (Apache web server)
+
+_sys → System-wide (Managed by the OS, not users)
+
+_content → Static content (Files served by the web server)
+
+_t → Type suffix (Standard ending for SELinux types)
+
+/path/to/file:
+
+
+##Target file or directory you want to relabel with the new SELinux context.
+
+SELinux Naming Convention
+
+SELinux uses consistent naming patterns for types:
+
+<service>_<scope>_<purpose>_t
+
+Examples:
+
+ssh_home_t → Files in user home directories accessible to SSH.
+
+mysql_db_t → MySQL database files.
+
+httpd_sys_rw_content_t → Web content that Apache can read and write.
+
+samba_share_t → Files shared via Samba.
+
+----------------------------------------------------------------
+
+Use ls -Z to check the SELinux context of a file:
+
+ls -Z /path/to/file
+
+Use restorecon to restore default contexts:
+sudo restorecon -Rv /path/to/directory     # Recursive and verbose
+
+-------------------------------------------------------------
+
+Emergency Mode:
+How to Boot into Emergency Mode
+
+Reboot your system.
+
+ At the GRUB menu, select the kernel entry you want to boot and press e to edit it.
+
+ Find the line starting with linux (it may start with linux16 or linuxefi on some systems).
+
+ Go to the end of that line and add:
+
+ systemd.unit=emergency.target
+
+ (You can also use just emergency as a shorthand on many systems.)
+
+ Boot with the modified options by pressing Ctrl+X or F10.
+
+-----------------------------------------------------------------
+
+
+
+Troubleshooting Flow
+1. Check Current Mode: getenforce
+2. Review Denials: ausearch / sealert
+3. Inspect Contexts: ls -Z /path_of_file/  and   ps -eZ
+4. Adjust Contexts/Policies if needed
+5. Use Permissive Mode temporarily for testing
+6. Avoid Disabling unless absolutely necessary
+
+Interview Tips
+- "SELinux adds critical MAC protection."
+- "I always check audit logs before changing modes."
+- "Disabling SELinux is the absolute last resort."
+
+------------------------------------------------------------------
+
+

@@ -1,0 +1,573 @@
+Here's a corrected and structured guide to set up Ansible connections between the Ansible control node and Ansible nodes:
+
+### On the Ansible Control Node
+
+1. **Switch to the Root User**:
+   
+   sudo su - root
+   
+
+2. **Update the System and Install Ansible**:
+   
+   yum update -y
+   dnf install -y ansible
+   
+
+3. **Verify Ansible Installation**:
+   
+   ansible localhost -m ping
+   ansible --version
+   
+
+### On All Nodes (Including the Control Node)
+
+1. **Create Ansible User**:
+   
+   useradd ansible
+   passwd ansible  # Set the password to 'ansible'
+   
+
+2. **Grant Sudo Privileges to Ansible User**:
+   Edit the sudoers file:
+   
+   vi /etc/sudoers
+   
+   Add the following line:
+   
+   ansible ALL=(ALL) NOPASSWD: ALL
+   
+
+3. **Configure SSH for Password Authentication**:
+   Edit the SSH configuration file:
+   
+   vi /etc/ssh/sshd_config
+   
+   Ensure the following lines are set correctly:
+   
+ 
+   PermitRootLogin yes  # Uncomment this line
+   #StrictModes yes
+   #MaxAuthTries 6
+   #MaxSessions 10
+
+   PasswordAuthentication yes  # Uncomment this line
+   #PermitEmptyPasswords no
+   #PasswordAuthentication no  # Comment this line
+   
+   now hit command to verify root priviledge
+   sudo su - root
+   sudo su - ansible
+
+   
+
+4. **Restart SSH Service**:
+   
+   service sshd restart
+   
+
+### On the Ansible Control Node (As the Ansible User)
+
+1. **Switch to Ansible User**:
+   
+   sudo su - ansible
+   
+
+2. **Generate SSH Key Pair**:
+   
+   ssh-keygen  # Press enter 3 times to accept defaults
+   
+
+3. **Copy the SSH Key to Each Node**:
+   
+   ssh-copy-id ansible@<node1_private_ip>
+   ssh-copy-id ansible@<node2_private_ip>
+   # Repeat for each node
+   
+
+4. **Verify Key Distribution**:
+   Log into each node and check the `.ssh` directory:
+   
+  on Client node
+  cd /home/ansible/.ssh
+  ls -lrth
+  cat id_rsa.pub
+  
+  on node1   
+  
+   ssh ansible@<node1_private_ip>
+   ls -a ~/.ssh
+   cat ~/.ssh/authorized_keys
+   
+
+   Ensure the public key is present in the `authorized_keys` file.
+
+5. **Verify SSH Access**:
+   Test SSH access to each node from the control node:
+   
+   ssh ansible@<node1_private_ip>
+   
+
+   You should be able to log in without being prompted for a password.
+
+### Final Ansible Setup
+
+With SSH keys distributed and passwordless access configured, Ansible can now be used to manage the nodes.
+
+1. **Create an Inventory File**:
+come on client
+shift to root user
+   
+   vi /etc/ansible/hosts
+   
+   Add your nodes:
+   
+   [myservers]
+   node1 ansible_host=<node1_private_ip>
+   node2 ansible_host=<node2_private_ip>
+   
+
+2. **Test Connectivity**:
+  now switch to ansible user on client
+  
+   ansible all -m ping
+   
+
+This setup ensures that the ansible user can SSH into all nodes without a password and has the necessary sudo privileges to perform administrative tasks.
+
+======================================================
+
+Inventory Management
+on client
+Edit Ansible Inventory File:
+sudo vi /etc/ansible/hosts
+
+
+View Ansible Inventory File:
+cat /etc/ansible/hosts
+
+
+Host Listing
+List Hosts in All Sections:
+ansible all --list-hosts
+
+
+List Hosts in Specific Sections:
+ansible devlinux --list-hosts
+ansible qalinux --list-hosts
+
+
+List First and Last IPs in Sections:
+ansible devlinux[0] --list-hosts  
+ansible devlinux[1] --list-hosts  
+ansible devlinux[-1] --list-hosts 
+ansible devlinux[-2] --list-hosts
+
+
+List Range of IPs in Sections:
+ansible devlinux[0:1] --list-hosts   
+ansible devlinux[0]:qalinux[1] --list-hosts
+ansible devlinux[0:1]:qalinux[0:1] --list-hosts
+
+
+
+Command Execution on Specific Hosts
+Execute Commands on Specific Hosts:
+ansible devlinux[0] -a "touch file1"                       >>check nodes if file1 is created in /home/ansible folder 
+ansible devlinux[0]:qalinux[0] -a "touch file1"
+ansible devlinux[0]:qalinux[0] -a "ls -ltr"
+
+
+Package Management
+Install and Remove Tree Package:
+ansible devlinux -a "yum install tree -y"
+ansible devlinux -a "sudo yum install tree -y"
+ansible devlinux -a "sudo yum remove tree -y"
+ansible devlinux -b -a "yum remove tree -y"
+ansible devlinux -b -a "yum install tree -y"                   >> check node whether tree is installed or not cmd is, tree --version
+ansible devlinux -ba "yum remove tree -y"
+ansible devlinux -ba "yum install tree -y"
+ansible devlinux -ba "yum remove tree -y"
+
+
+
+
+Package and Service Management with Ansible Modules
+Manage Packages with Ansible Modules:
+on client create " vi test.yaml" 
+and add these lines>        
+
+ --- #ansible yaml host
+
+- hosts: devlinux
+  user: ansible
+  become: yes
+  connection: ssh
+  gather_facts: yes
+
+
+  tasks:
+    - name: install
+      action: yum pkg=tree state=present
+
+
+ansible devlinux -b -m yum -a "pkg=tree state=present"
+ansible devlinux -b -m yum -a "pkg=tree state=absent"
+ansible devlinux -b -m yum -a "pkg=httpd state=present"
+ansible devlinux -b -m service -a "name=httpd state=started"
+
+
+File Management
+Edit and Copy Files:
+vi index.html
+ansible devlinux -b -m copy -a "src=index.html dest=/var/www/html/"
+
+
+Download URLs:
+ansible devlinux -b -m get_url -a "src=https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.zip dest=/mnt"
+ansible devlinux -b -m get-url -a "src=https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.zip dest=/mnt"
+ansible devlinux -b -m get_url -a "url=https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.zip dest=/mnt"
+
+
+
+
+User Management
+Create User:
+ansible devlinux -b -m user -a "name=velocity state=present"
+Inventory File Example
+
+
+
+Ensure your /etc/ansible/hosts file looks like this:
+[devlinux]
+172.31.47.50
+172.31.43.0
+
+[qalinux]
+172.31.47.51
+172.31.43.55
+
+===================================================================================
+
+Here are the corrected steps and sample playbooks for your Ansible practical tasks:
+
+### Target Section
+
+#### Single Hosts
+
+**mytarget.yaml file**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  become: yes
+  gather_facts: yes
+  connection: ssh
+```
+
+**mytarget.yaml file for a specific host**
+```yaml
+---
+- hosts: devlinux[1]
+  user: ansible
+  become: yes
+  gather_facts: yes
+  connection: ssh
+```
+
+#### Two Hosts
+
+**target.yml**
+```yaml
+---
+- hosts: devlinux[1], qalinux[1]
+  user: ansible
+  become: yes
+  gather_facts: yes
+  connection: ssh
+```
+
+#### Run the Playbook
+
+Execute the playbook:
+```sh
+ansible-playbook target.yaml
+```
+
+Dry run to check indentation:
+```sh
+ansible-playbook target.yaml --check
+```
+
+### Tasks
+
+#### Single Task
+
+**single_task.yml**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  become: yes
+  connection: ssh
+  gather_facts: yes
+
+  tasks:
+    - name: install httpd on servers
+      yum:
+        name: httpd
+        state: present
+```
+
+#### Multiple Tasks
+
+**task.yml**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  become: yes
+  connection: ssh
+  gather_facts: yes
+
+  tasks:
+    - name: install httpd on servers
+      yum:
+        name: httpd
+        state: present
+
+    - name: start httpd service
+      service:
+        name: httpd
+        state: started
+
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html
+```
+
+### Host-Specific Tasks
+
+**host_tasks.yml**
+```yaml
+---
+- hosts: devlinux[0]
+  user: ansible
+  become: yes
+  gather_facts: yes
+  connection: ssh
+
+  tasks:
+    - name: install git
+      yum:
+        name: git
+        state: present
+
+- hosts: devlinux[1]
+  user: ansible
+  become: yes
+  gather_facts: yes
+  connection: ssh
+
+  tasks:
+    - name: install tree
+      yum:
+        name: tree
+        state: present
+```
+
+### Variables
+
+**variables.yml**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  become: yes
+
+  vars:
+    pkgname: httpd
+    index_path: /var/www/html/
+
+  tasks:
+    - name: install apache
+      yum:
+        name: "{{ pkgname }}"
+        state: present
+
+    - name: start apache
+      service:
+        name: "{{ pkgname }}"
+        state: started
+
+    - name: deploy index file
+      copy:
+        src: index.html
+        dest: "{{ index_path }}"
+```
+
+### Handlers
+
+**handlers.yml**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  connection: ssh
+  become: yes
+
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+      notify: start service
+
+  handlers:
+    - name: start service
+      service:
+        name: httpd
+        state: started
+```
+
+#### Multiple Handlers
+
+**multiple_handlers.yml**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  connection: ssh
+  become: yes
+
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+      notify:
+        - start
+        - deploy
+
+  handlers:
+    - name: start
+      service:
+        name: httpd
+        state: started
+
+    - name: deploy
+      copy:
+        src: index.html
+        dest: /var/www/html
+```
+
+### Loops
+
+**loops.yml (Print Task)**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  connection: ssh
+  become: yes
+
+  tasks:
+    - name: print task
+      command: echo "{{ item }}"
+      loop:
+        - "one"
+        - "two"
+        - "three"
+```
+
+**loops.yml (Create User Task)**
+```yaml
+---
+- hosts: devlinux
+  user: ansible
+  connection: ssh
+  become: yes
+
+  tasks:
+    - name: create user task
+      user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "one"
+        - "two"
+        - "three"
+```
+
+These steps and playbooks should now be correctly formatted and organized for your Ansible practical tasks.
+
+
+==================================================================================================================================
+
+Here is the corrected and organized list of Ansible steps for working with Ansible Vault:
+
+### Working with Ansible Vault
+
+#### Create and Encrypt a YAML File
+
+1. **Create a YAML file:**
+    ```sh
+    vi loop.yaml
+    ```
+
+2. **Encrypt the YAML file:**
+    ```sh
+    ansible-vault encrypt loop.yaml
+    ```
+
+3. **View the encrypted YAML file:**
+    ```sh
+    cat loop.yaml
+    ```
+
+4. **Edit the encrypted YAML file:**
+    ```sh
+    ansible-vault edit loop.yaml
+    ```
+
+5. **Decrypt the YAML file:**
+    ```sh
+    ansible-vault decrypt loop.yaml
+    ```
+
+6. **Encrypt the YAML file again:**
+    ```sh
+    ansible-vault encrypt loop.yaml
+    ```
+
+7. **Edit the YAML file using Ansible Vault:**
+    ```sh
+    ansible-vault edit loop.yaml
+    ```
+
+8. **Rekey the YAML file (change the encryption password):**
+    ```sh
+    ansible-vault rekey loop.yaml
+    ```
+
+#### Create and Manage Another Encrypted YAML File
+
+1. **Create a new encrypted YAML file:**
+    ```sh
+    ansible-vault create test.yaml
+    ```
+
+2. **View the contents of the new encrypted YAML file:**
+    ```sh
+    cat test.yaml
+    ```
+
+3. **Edit the new encrypted YAML file:**
+    ```sh
+    ansible-vault edit test.yaml
+    ```
+
+
+These steps are now correctly organized and clearly laid out for working with Ansible Vault in your practical tasks.
+
+========================================================================

@@ -1,0 +1,94 @@
+==============================
+BASIC VI/VIM EDITOR CHEAT SHEET
+==============================
+
+Vi (or Vim) has 3 basic modes:
+
+1. Normal Mode (Default when you open a file)
+2. Insert Mode (For typing/editing text)
+3. Command Mode (For saving, quitting, etc.)
+
+-----------------------------
+HOW TO OPEN A FILE
+-----------------------------
+vi filename.txt     → Opens file in vi
+
+If the file doesn’t exist, it will be created.
+
+-----------------------------
+MODE SWITCHING
+-----------------------------
+Press `i`       → Switch to Insert Mode  
+Press `Esc`     → Return to Normal Mode  
+Press `:`       → Enter Command Mode from Normal Mode
+
+-----------------------------
+INSERTING/TYPING TEXT
+-----------------------------
+Press `i`       → Insert before cursor  
+Press `a`       → Append after cursor  
+Press `o`       → Open new line below  
+Press `O`       → Open new line above  
+
+(Type text normally in Insert Mode)
+
+-----------------------------
+SAVING AND EXITING
+-----------------------------
+Press `Esc` to go back to Normal Mode, then type:
+
+:w              → Save  
+:w filename     → Save as  
+:q              → Quit  
+:q!             → Quit without saving  
+:wq             → Save and quit  
+:x              → Save and quit (same as :wq)
+
+-----------------------------
+BASIC NAVIGATION
+-----------------------------
+Arrow Keys      → Move cursor  
+h / l           → Left / Right  
+j / k           → Down / Up  
+
+0               → Move to beginning of line  
+$               → Move to end of line  
+gg              → Go to top of file  
+G               → Go to bottom of file  
+
+-----------------------------
+EDITING TEXT
+-----------------------------
+x               → Delete character  
+dd              → Delete (cut) entire line  
+yy              → Copy line  
+p               → Paste below  
+P               → Paste above  
+u               → Undo  
+Ctrl + r        → Redo  
+
+-----------------------------
+SEARCHING TEXT
+-----------------------------
+/word           → Search for 'word'  
+n               → Next match  
+N               → Previous match  
+
+-----------------------------
+EXTRA TIPS
+-----------------------------
+:set number     → Show line numbers  
+:set nonumber   → Hide line numbers  
+:set paste      → Enable paste mode  
+:set nopaste    → Disable paste mode  
+
+-----------------------------
+EXIT EMERGENCY (if stuck)
+-----------------------------
+Press `Esc` multiple times, then type:
+
+:q!             → Quit without saving  
+
+==============================
+END OF NOTES
+==============================

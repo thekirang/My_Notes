@@ -1,0 +1,46 @@
+### Steps to Host a Webpage on EC2 (Amazon Linux 2023)
+
+#### 1️⃣ Switch to Root & Update Packages
+sudo su - root
+yum update -y
+
+#### 2️⃣ Install & Start Apache
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+
+#### 3️⃣ Create a Test Webpage
+echo '<h1>Hello from EC2!</h1>' > /var/www/html/index.html
+chmod -R 755 /var/www/html
+
+#### 4️⃣ Configure Firewall to Allow HTTP, HTTPS & SSH
+sudo yum install -y firewalld
+sudo systemctl enable --now firewalld
+
+firewall-cmd --add-service=ssh --permanent
+firewall-cmd --add-service=http --permanent
+firewall-cmd --add-service=https --permanent
+firewall-cmd --reload
+
+#### 5️⃣ Install Net Tools & Verify Apache Listening on Port 80
+yum install -y net-tools
+netstat -tulnp | grep :80
+
+# Expected Output:
+# tcp   0   0 0.0.0.0:80   0.0.0.0:*   LISTEN   <process-id>/httpd
+
+#### 6️⃣ Fix Apache Listening on IPv4 (if output shows "tcp6")
+vi /etc/httpd/conf/httpd.conf
+
+# Ensure these lines exist:
+Listen 0.0.0.0:80   # Enable HTTP
+Listen 0.0.0.0:443  # Enable HTTPS
+
+# Restart Apache:
+systemctl restart httpd
+
+#### 7️⃣ Test Webpage
+- Open a browser and visit:
+  http://<EC2-Public-IP>
+
+- You should see: **"Hello from EC2!"**

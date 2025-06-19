@@ -1,0 +1,90 @@
+
+Linux Directory Tricks (Where to Find What)
+
+1. Config Files → /etc/
+
+Examples:
+/etc/nginx/           # Nginx configs
+/etc/ssh/sshd_config  # SSH server settings
+/etc/fstab            # Filesystem mounts
+
+Trick: Think "ETCetera = Everything To Configure"
+
+2. Logs → /var/log/
+
+Examples:
+/var/log/syslog    # System logs
+/var/log/nginx/    # Nginx logs
+/var/log/auth.log  # Authentication logs
+
+Trick: "VARiable data keeps LOGging history"
+
+3. Application Data → /var/lib/
+
+Examples:
+/var/lib/mysql/    # MySQL databases
+/var/lib/docker/   # Docker containers
+/var/lib/apt/      # APT package metadata
+
+Trick: "LIBraries store app DATA"
+
+Note: logs and App Data stores in /Var/  its common path
+
+4. User-Specific Configs → ~/.config/ or ~/.*  (stores in HOME)
+
+Examples:
+~/.bashrc              # Shell config
+~/.ssh/                # SSH keys
+~/.config/gtk-3.0/     # GUI app settings
+
+Trick: "DOT files hide in your HOME"
+
+Pro Tips for Interviews
+
+Exceptions:
+Kernel: /boot/ and /proc/
+Temporary Files: /tmp/ and /var/tmp/
+Binaries: /usr/bin/ (user) vs /sbin/ (system)
+
+Quick Verification:
+ls -l /etc/ | grep nginx   # Check config locations
+find /var/log -name "*.log" # List all log files
+
+Modern Systems:
+Snap/Flatpak: ~/snap/ or ~/.local/share/flatpak/
+Systemd: /etc/systemd/system/ for custom services
+
+Mnemonic Summary
+"Every Thing Configured → /etc/
+VARiable LOGs → /var/log/
+LIBraries hold APP DATA → /var/lib/
+DOT files hide at HOME → ~/.*"
+
+-------------------------------------
+
+filesystem
+
+/etc - configuration files of all
+
+/proc - details of systems hardware,component and processes 
+
+/bin - essential binaries used by user for system operations - all commands
+
+/sbin - essential binaries used by system for system administration like reboot, ifconfig , shutdown
+
+/usr - user related program data
+
+/var - data which is variable in size like logs or database
+
+/tmp - temp files by app or system
+
+/home - home directories of all user 
+
+/lib - conatins essential shared libraries required by /bin and /sbin
+
+/mnt - for mounting traditional filesystem
+
+/media - mounting removable media like pen drives
+
+/dev - represents hardware on system and allow sofware to interact with them
+       contains device files which represents hardware on system and allow sofware to interact with them like /dev/sda , /dev/null for discard data 

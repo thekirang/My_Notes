@@ -1,0 +1,181 @@
+## Types of Addresses
+**1. Physical Address** - The hardware address assigned to a device (e.g., MAC address). Used for communication within a local network.  
+**2. Logical Address** - Assigned by software (e.g., IP address). Enables devices to communicate across different networks.  
+
+## Types of Logical Addresses
+- **IPv4 (Internet Protocol version 4)**  
+- **IPv6 (Internet Protocol version 6)**  
+
+---
+
+## IPv4 Addressing
+
+**Structure:**  
+- 32 bits total, divided into 4 octets (8 bits each)  
+- Each octet ranges from 0 to 255  
+- Format: `192.168.39.240` (dotted decimal)  
+- Binary format: `11000000.10101000.00100111.11110000`  
+
+**Components:**  
+- Network bits + Host bits = 32 bits  
+- Example: In `192.168.39.240`, each number is one octet  
+
+---
+
+### IPv4 Address Classes
+
+| Class | Range (First Octet)  | Network.Host Structure  | Typical Use              |
+|-------|----------------------|-------------------------|--------------------------|
+| A     | 1 – 126              | N.H.H.H                 | Large networks           |
+| B     | 128 – 191            | N.N.H.H                 | Medium-sized networks    |
+| C     | 192 – 223            | N.N.N.H                 | Small networks           |
+| D     | 224 – 239            | Multicast               | Multicasting             |
+| E     | 240 – 254            | Experimental            | Research/Experimental    |
+
+- 127.x.x.x is reserved for loopback (localhost)  
+
+**Identifying the Class:**  
+- Check the first octet of the IP address and match it to the ranges above.  
+
+---
+
+### Private IPv4 Address Ranges
+
+| Class | Private Range                      |
+|-------|------------------------------------|
+| A     | 10.0.0.0 – 10.255.255.255          |
+| B     | 172.16.0.0 – 172.31.255.255        |
+| C     | 192.168.0.0 – 192.168.255.255      |
+
+---
+
+### Binary Representation Example  
+To convert `192.168.31.200` to binary:
+
+| Octet | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+|-------|-----|----|----|----|---|---|---|---|
+| 192   | 1   | 1  | 0  | 0  | 0 | 0 | 0 | 0 |
+| 168   | 1   | 0  | 1  | 0  | 1 | 0 | 0 | 0 |
+| 31    | 0   | 0  | 0  | 1  | 1 | 1 | 1 | 1 |
+| 200   | 1   | 1  | 0  | 0  | 1 | 0 | 0 | 0 |
+
+So, in binary: `11000000.10101000.00011111.11001000`
+
+---
+
+### Network ID and Broadcast ID  
+
+**Finding the Network ID:**  
+1. Identify the class.  
+2. For the network part, keep the relevant octets; set the host part to zero.  
+
+**Example:**  
+- IP: 150.10.20.30 (Class B)  
+- Network ID: 150.10.0.0  
+- Broadcast ID: 150.10.255.255  
+- Usable hosts: 2^16 - 2 = 65,534  
+
+---
+
+### Subnet Mask  
+- Used to distinguish the network and host portions of an IP address.  
+- Example for Class A: `255.0.0.0` (binary: `11111111.00000000.00000000.00000000`)  
+- Example for Class B: `255.255.0.0` (binary: `11111111.11111111.00000000.00000000`)  
+
+---
+
+### Subnetting  
+
+**Purpose:**  
+- To efficiently use IP address space and avoid wastage.  
+- Subnetting divides a network into smaller, logical sub-networks.  
+
+---
+
+## IPv6 Addressing  
+
+**Key Features:**  
+- 128 bits, written as 8 groups of 4 hexadecimal digits, separated by colons (e.g., `2001:0db8:85a3:0000:0000:8a2e:0370:7334`)  
+- Vast address space (over 3.4 × 10^38 addresses)  
+- No need for NAT (Network Address Translation)  
+- Built-in security (IPsec), QoS, and more efficient routing  
+
+**Comparison Table: IPv4 vs IPv6**
+
+| Feature               | IPv4                          | IPv6                                  |
+|----------------------|-------------------------------|----------------------------------------|
+| Address Length       | 32 bits (4 octets)            | 128 bits (8 groups)                    |
+| Address Format       | Decimal, separated by dots    | Hexadecimal, separated by colons      |
+| Example              | 192.168.1.1                   | 2001:0db8:85a3:0000:0000:8a2e:0370:7334 |
+| Address Space        | ~4.3 billion                  | Over 3.4 × 10^38                        |
+| NAT Required         | Yes (for private networks)    | No (globally unique addresses)         |
+| Security             | Optional (IPsec can be added) | Built-in IPsec                         |
+| Broadcast            | Yes                           | No (uses multicast)                    |
+| Header Complexity    | Simple                        | More complex, but efficient            |
+
+---
+
+## Summary  
+
+- **Physical addresses** are hardware-based, while **logical addresses** (IP addresses) allow devices to communicate across networks.  
+- **IPv4** is 32-bit, divided into classes (A–E), with private and public ranges, and uses subnet masks to separate network and host portions.  
+- **IPv6** is 128-bit, uses hexadecimal notation, and solves address exhaustion while adding security and efficiency features.  
+- **Subnetting** helps manage IP address allocation and network segmentation.  
+
+---
+
+## ######### How to find Subnet Mask, BLOCK SIZE, NID, BID #########
+
+Step 1: Understand the IP & CIDR  
+IP = 192.168.100.128/26 → first 26 bits are network (3 full octets + 2 bits in 4th)  
+
+Step 2: Calculate Subnet Mask  
+First 3 octets = 255.255.255  
+Add first two bits in 4th octet: 128 + 64 = 192  
+→ Subnet mask = 255.255.255.192  
+
+Step 3: Calculate Block Size  
+Block size = 256 - 192 = 64 (in 4th octet)  
+
+Step 4: Find the Network ID (NID)  
+As block size is 64, then write multiples of 64:  
+64, 128, 192, 248  
+Now check in which two values the last octet of subnet lies → it's 128 and 192  
+Take the first value as NID  
+→ Network ID (NID) = 192.168.100.128  
+
+Step 5: Find the Broadcast ID (BID)  
+192.168.100.(192 - 1)  
+→ BID = 192.168.100.191  
+
+Step 6: Find First and Last Usable IP  
+First host: NID + 1 = 192.168.100.129  
+Last host: BID - 1 = 192.168.100.190  
+
+---
+
+Example: 172.16.44.200/20  
+Subnet mask: 255.255.240.0  
+Block size = 256 - 240 = 16  
+Multiples: 16, 32, 48, 64  
+→ 44 lies between 32 and 48  
+NID: 172.16.32.0  
+BID: 172.16.47.255  
+
+---
+
+Example: 10.10.128.1/18  
+Subnet mask: 255.255.192.0  
+Block size: 256 - 192 = 64  
+Multiples: 64, 128, 192, 248  
+NID: 10.10.128.0  
+BID: 10.10.191.255  
+
+---
+
+Example: 192.168.50.100/22  
+Subnet mask: 255.255.252.0  
+Block size: 256 - 252 = 4  
+Multiples: 4, 8, 40, 44, 48, 52, 56  
+NID: 192.168.44.0  
+BID: 192.168.52.255

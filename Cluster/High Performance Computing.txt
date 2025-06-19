@@ -1,0 +1,122 @@
+r===========================
+🚀 HIGH PERFORMANCE COMPUTING (HPC) - QUICK NOTES
+===========================
+
+1. WHAT IS HPC?
+---------------
+HPC = Combining multiple computers to solve complex problems faster than one system.
+- Multiple CPUs work together using shared memory, storage, and I/O.
+- Used to run complex simulations, analytics, and big data tasks.
+
+cluster: its group of nodes (CPU and Memory) then its connected to swich. (Disk is shared amongst all Nodes) then all 
+
+Architecture: group of node working together as unified system 
+
+Tyoes: 
+1)Supercomputer: group of clusters
+2)
+3) Grid Computing
+
+
+Key Idea: "CPU + Memory + Storage = Speed"
+
+2. COMPONENTS OF HPC
+---------------------
+CNS = Compute + Network + Storage
+- Compute: CPUs/GPUs
+- Network: High-speed connection between nodes
+- Storage: Fast, scalable data access
+
+3. TYPES OF HPC CLUSTERS
+-------------------------
+"CD" = Cluster vs Distributed
+
+- Cluster Computing:
+  * Computers (nodes) placed close physically and in network.
+  * Used for tightly coupled tasks.
+
+- Distributed Computing:
+  * Nodes across locations (on-prem or cloud).
+  * Best for loosely coupled tasks.
+
+4. WORKLOAD TYPES
+------------------
+"TLC" = Tightly coupled, Loosely coupled, Combination
+
+- Loosely Coupled:
+  * Independent tasks running in parallel (e.g. batch jobs)
+
+- Tightly Coupled:
+  * Tasks dependent on each other.
+  * Needs low-latency network and shared memory.
+
+5. COMPUTING STYLES
+--------------------
+"P.S.D" = Parallel, Serial, Distributed
+
+- Parallel Computing:
+  * Multiple processors work together to solve tasks.
+
+- Serial Computing:
+  * Single processor works step-by-step.
+
+- Distributed Computing:
+  * Multiple systems work together to complete a task.
+
+6. JOB SCHEDULING
+------------------
+Job schedulers: SLURM, PBS, Torque
+- Manages CPU, memory, GPU allocation
+- Common SLURM commands: sbatch, squeue, scancel
+
+7. REAL-WORLD USE CASES
+------------------------
+- Scientific: Climate modeling, genomics, physics
+- Engineering: CFD, FEA
+- AI/ML: Large-scale model training
+- Finance: Risk analysis, simulations
+
+8. HPC HARDWARE
+----------------
+- Multi-core CPUs, GPUs
+- High-speed interconnects (e.g., InfiniBand)
+- Shared or distributed memory
+- Needs cooling, power, and rack management
+
+9. HPC vs CLOUD COMPUTING
+---------------------------
+"Think LCSU: Latency, Cost, Scalability, Use"
+
+| Feature       | HPC                         | Cloud Computing           |
+|---------------|-----------------------------|---------------------------|
+| Latency       | Very low (InfiniBand, etc.) | Higher (Internet)         |
+| Cost Model    | CAPEX (hardware purchase)   | OPEX (pay-as-you-go)      |
+| Scalability   | Limited by physical nodes   | Virtually unlimited       |
+| Use Case      | Tightly coupled workloads   | Loosely coupled tasks     |
+
+10. SOFTWARE IN HPC
+---------------------
+- Linux-based OS (CentOS, Rocky Linux)
+- Dependency tools: modules, Singularity, Conda
+- Programming: MPI, OpenMP
+
+11. HPC NETWORKING
+-------------------
+- High-speed, low-latency (InfiniBand, Omni-Path)
+- Network Topologies: Fat Tree, Torus, Dragonfly
+
+12. PERFORMANCE METRICS
+------------------------
+- FLOPS = Floating Point Operations Per Second
+- Other metrics: Latency, Throughput, Wait Time, CPU/GPU utilization
+- Tools: Ganglia, Nagios, Grafana
+
+===========================
+🧠 MEMORY TIP SUMMARY
+===========================
+- CNS = Compute, Network, Storage
+- CD = Cluster vs Distributed
+- TLC = Tightly, Loosely, Combination
+- P.S.D = Parallel, Serial, Distributed
+- LCSU = Latency, Cost, Scalability, Use
+- Tools = SLURM, MPI, Grafana, Singularity
