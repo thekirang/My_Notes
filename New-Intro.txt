@@ -1,0 +1,32 @@
+Good morning everyone,
+
+It’s a my pleasure to be here for the interview at Infosys.
+
+My name is Kiran Gaikwad, and I hold a Bachelor’s degree in Engineering.
+
+Currently, I am associated with Vodafone Idea, working on the Intellza MS project through Accolite Digital India Pvt. Ltd.
+
+Thank you for giving me this opportunity to introduce myself
+
+in this project ,
+
+
+We receives multiple data types—
+CGF (Charging Gateway Function), CGNAT (Carrier-Grade NAT) and IPDR (Internet Protocol Detail Record , 
+which is a combination of CGF and CGNAT) — from various oem like Nokia, Ericsson, Cisco, Mavenir, ZTE, so we need to ensure the data flow trend with tolerance upto 5%. 
+we validate the incoming data (its approx. 32 lakhs Files, Total files size 4.8tb/daily, and having raid=3 ) there might be chances of receiving Zero volume data so we need to rectify the issue, and ensure its quality and correctness before any further processing.
+Unstitched data (CGF and CGNAT) is stitched to form ipdr using Apache Spark.
+after that, stiched and received ipdr data, its formatted in specific table format and written into Hive tables present on Hadoop’s HDFS (cluster consist of 99 nodes and size approx 10PB) using Apache Spark.
+
+so,
+The nodal team accesses the processed data from Hive tables, typically using Spark engines for fast querying and analysis.
+This enables them to fulfill requests from nodal officers efficiently.
+
+Workflow Orchestration with Apache Airflow:
+
+The entire workflow—from data ingestion and validation, stitching through Spark ,ingestion into Hive is scheduled, automated, and monitored using Graphana , Apache Spark ,SparkApache Airflow , Ambari.
+
+Airflow ensures reliability, error handling, and easy management of the pipeline.
+
+In summary:
+Your pipeline ensures that raw data from multiple sources is validated, processed, and made available in a structured format for the nodal team, with all steps automated and monitored for reliability using industry-standard big data tools.
