@@ -119,3 +119,65 @@ AWS VPC is the foundation for secure, scalable, and flexible networking in AWS.
 It enables you to architect cloud networks with fine-grained control over connectivity, security, and resource placement.
 
 Mastery of VPC concepts is essential for AWS cloud practitioners.
+
+--------------------------------------------------------------------
+
+SIMPLE STEPS TO CREATE A VPC IN AWS
+===================================
+
+1. LOGIN TO AWS CONSOLE
+------------------------
+- Go to VPC Dashboard → Click on "Create VPC"
+
+2. CREATE VPC
+-------------
+- Name tag: MyVPC (or any name)
+- IPv4 CIDR block: 10.0.0.0/16 (gives 65,536 IPs)
+- Leave IPv6 disabled (unless needed)
+- Tenancy: Default (shared hardware)
+- Click "Create VPC"
+
+3. CREATE SUBNETS
+-----------------
+- Go to Subnets → Click "Create subnet"
+- Choose your VPC (MyVPC)
+- Create at least 2 subnets:
+  - Public Subnet: 10.0.1.0/24 (for internet-facing services)
+  - Private Subnet: 10.0.2.0/24 (for databases)
+
+4. CREATE AND ATTACH INTERNET GATEWAY
+-------------------------------------
+- Go to Internet Gateways → Click "Create internet gateway"
+- Name: MyIGW
+- Click "Attach to VPC" → Select your VPC (MyVPC)
+
+5. UPDATE ROUTE TABLE FOR PUBLIC SUBNET
+---------------------------------------
+- Go to Route Tables
+- Find the one associated with your VPC
+- Click "Edit routes"
+  - Add route: 0.0.0.0/0 → Target: your Internet Gateway
+- Click "Edit subnet associations" → Select Public Subnet
+
+6. ENABLE AUTO-ASSIGN PUBLIC IP FOR PUBLIC SUBNET
+-------------------------------------------------
+- Go to Subnets → Select Public Subnet
+- Click "Actions" → "Modify auto-assign IP settings"
+- Check: Auto-assign IPv4 public IP
+
+VPC IS READY!
+=============
+You now have:
+- A VPC (10.0.0.0/16)
+- A public subnet and private subnet
+- An Internet Gateway connected
+- A route to the internet for the public subnet
+
+TIPS FOR INTERVIEW
+------------------
+- Be able to explain each component: VPC, Subnet, Route Table, IGW
+- Know the difference between public vs private subnet
+- Optionally mention NAT Gateway if asked how private subnets access the internet
+"""
+
+
