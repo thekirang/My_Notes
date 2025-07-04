@@ -1,0 +1,42 @@
+What is Amazon S3?
+Amazon S3 (Simple Storage Service) is a fully managed, highly scalable, and durable cloud storage service provided by AWS.
+
+It is designed for storing and retrieving any amount of data from anywhere on the web
+
+
+Core Concepts
+
+Term	                 Description
+Bucket	  >   A container for storing objects (files). Each bucket name must be globally unique.
+Object	  >   The actual data/file stored in S3, along with its metadata and a unique key (identifier).
+Key	The   >   unique identifier for each object within a bucket.
+Metadata  >   Additional information (name-value pairs) about the object.
+
+
+Key Features
+Scalability: Store unlimited data; automatically scales as your needs grow.
+
+Data Durability: 99.999999999% (eleven nines) durability by replicating data across multiple facilities.
+
+Availability: 99.99% uptime SLA for each storage class.
+
+Security: Data encryption (at rest and in transit), IAM policies, bucket policies, and ACLs for access control.
+
+Cost-Effectiveness: Pay-as-you-go pricing; various storage classes for different access needs.
+
+Integration: Works seamlessly with other AWS services (e.g., Lambda, Glue, DataBrew)
+
+Common Use Cases
+Data backup and restore
+Hosting static websites
+Big data analytics
+Content distribution
+Archiving and disaster recover
+
+Practical: done
+
+
+
+
+
+
