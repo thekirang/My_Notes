@@ -89,8 +89,15 @@ but i , along with team implemented logrotate to keep disk usage under threshold
 
 Why do you want to leave this project ?
 i learned a lot from current project
-However, I now want to transition into a cloud-focused role — where I can apply my skills in automation, infrastructure, and maintaining to cloud-native platforms like AWS.
+However, I now want the transition into a cloud-focused role — where I can apply my skills in automation, infrastructure, and maintaining to cloud-native platforms like AWS.
 
-Current CTC and expected CTC ... too much hike ?
+Current CTC
+My current CTC is ₹X LPA
 
-I have continuously upskilled myself and taken on more technically challenging roles. From desktop support to Linux system administration, and now working as a System Analyst
+and expected CTC
+i am open to discuss fair and competitive compensation based on my skills and industry standards,
+Could you please share the budgeted range for this role?
+
+Why are you expecting a high hike?
+My career growth has been consistent and skill-driven. I started in desktop support, moved to Linux system administration, and now contribute as a System Analyst. Along the way, I’ve continuously upskilled myself, taken on more responsibilities
+
