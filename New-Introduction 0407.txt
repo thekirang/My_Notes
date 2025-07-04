@@ -1,0 +1,96 @@
+Introduction:
+
+Good morning everyone,
+
+It’s my pleasure to be here for the interview at Infosys.
+
+My name is Kiran Gaikwad, and I hold a Bachelor’s degree in Engineering.
+I have 3.4 years of experience working as a Desktop Support Engineer, Linux System Administrator, and currently as a System Analyst.
+
+at Present, I am associated with Vodafone Idea, working on the Intellza MS project through Accolite Digital India Pvt. Ltd.
+
+Thank you for giving me this opportunity to introduce myself
+
+----------------------------------------------------------------------------------------------------------
+
+
+Project OverView and Workflows:
+
+In this project, we receive high-volume telecom data from multiple circles in three main types:
+
+
+CGF (Charging Gateway Function), its user metadata / charging sessions
+CGNAT (Carrier-Grade NAT) , its IP-level usage / NAT logs
+and 
+IPDR (Internet Protocol Detail Record — a combination of CGF and CGNAT data) 
+
+
+from multiple circles
+ 
+gathered by the oem like Nokia, Ericsson, Cisco, Mavenir, ZTE,
+#we need to ensure the data receiving status is continous, without getting stucked anywhere, by keeping our landing server's all resources under thresholds , avoid data backlog or loss for this We use logrotate cron jobs to manage logs and some tmp files.
+
+
+This data is being received on our landing servers, in pre-define paths  
+
+#we need to validate the data we are receiving is with correct prefix, timestamp, and session IDs, and flow trend with tolerance upto 5% with reference to D-1 stats
+
+and after that 
+
+#we need to ensure the incoming data (its 32 lakh files per day , Total volume: ~4.8 TB/day , Stored on a system with RAID 3 redundancy) 
+sometimes there might be possibilities of receiving: Zero-volume files or corrupt data
+
+This Zero volume data or Corrupt files arent processed further and getting moved in "error path"
+
+##if we received zero volume files or corrupt data - we coordinate with the upstream teams to rectify the issues.
+
+to ensure its quality and correctness before any further processing.
+#We analyze this trend using custom scripts that track: File count , Total data volume , Per-circle statistics (daily)
+
+
+and after that,
+
+Unstitched data (CGF and CGNAT) is stitched to form ipdr using Apache Spark.
+
+**apache spark is the distributed processing engine designed for large-scale data processing due to its in-memory computation capabilities**
+
+after that, this ipdr data, its formatted in specific table format and saved into Hive tables present on Hadoop’s HDFS (cluster consist of 99 nodes and size approx 10PB) using Apache Spark.
+
+so that,
+The nodal team can access the processed data from Hive tables, typically using Spark engines for faster querying and analysis.
+This enables them to fulfill requests from nodal officers efficiently.
+
+this spark jobs are being scheduled with the help of Apache Airflow:
+**Apache Airflow is job schedular which schedules and automate spark job**
+
+this Airflow ochestrates entire Spark workflows from data stitching , storing in Hive table in Hadoops Server and then accessed it again as per nodal request.
+
+and 
+
+we have, Ambari Portal for provisioning, managing, monitoring, and securing Apache Hadoop clusters
+we have, graphana dashboard to overview and tracks the files status and the metrics of Servers
+we have, Spark Portal for monitoring and debugging Spark jobs
+we have, airflow to track task statuses, logs, schedules, and execution history
+
+Our goal is to ensure that ,
+raw data from telecom circles is validated, processed, and stored efficiently, and made available in a structured format for downstream consumption — all while maintaining automation, accuracy, and reliability using tools like Spark, Hive, Airflow, Ambari, and Grafana.
+
+In summary:
+Your pipeline ensures that raw data from multiple sources is validated, processed, and made available in a structured format for the nodal team, with all steps automated and monitored for reliability using industry-standard big data tools.
+
+How do you contribute in the project?
+
+initially, Clients sitescope team used to share the health and metrics of all servers twice a day
+But i and my team configure graphana for real time metrics. this made less error and backlogs and ensure all servers in threshold in realtime.
+
+What Was your Greatest Achievement?
+One major challenge we faced was disk usage management. Previously, disk cleanup was done manually after thresholds were breached
+but i , along with team implemented logrotate to keep disk usage under threshold help to keep disk under threshold without human intervention
+
+Why do you want to leave this project ?
+i learned a lot from current project
+However, I now want to transition into a cloud-focused role — where I can apply my skills in automation, infrastructure, and maintaining to cloud-native platforms like AWS.
+
+Current CTC and expected CTC ... too much hike ?
+
+I have continuously upskilled myself and taken on more technically challenging roles. From desktop support to Linux system administration, and now working as a System Analyst
