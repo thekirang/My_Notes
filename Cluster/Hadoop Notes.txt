@@ -46,14 +46,9 @@ EDGE NODE
 
 --------------------------------------------------
 
-APACHE SPARK
-============
-- A powerful distributed computing engine for big data processing.
-- Uses in-memory computing whenever possible for speed.
-- Up to 100x faster than Hadoop MapReduce in certain cases.
-- Especially effective for iterative algorithms (e.g., machine learning).
-
---------------------------------------------------
+Block Structure
+---------
+-Enables distributed storage and replication for scalability and fault tolerance
 
 YARN WORKFLOW (SIMPLIFIED)
 ==========================

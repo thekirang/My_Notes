@@ -52,7 +52,9 @@ and after that,
 
 Unstitched data (CGF and CGNAT) is stitched to form ipdr using Apache Spark.
 
-**apache spark is the distributed processing engine designed for large-scale data processing due to its in-memory computation capabilities**
+**{Apache Spark:
+             apache spark is the distributed processing engine designed for large-scale data processing is used
+              due to its in-memory computation capabilities}**
 
 after that, this ipdr data, its formatted in specific table format and saved into Hive tables present on Hadoop’s HDFS (cluster consist of 99 nodes and size approx 10PB) using Apache Spark.
 
@@ -61,7 +63,9 @@ The nodal team can access the processed data from Hive tables, typically using S
 This enables them to fulfill requests from nodal officers efficiently.
 
 this spark jobs are being scheduled with the help of Apache Airflow:
-**Apache Airflow is job schedular which schedules and automate spark job**
+
+**{Apache Airflow:
+                 Apache Airflow is job schedular which schedules and automate spark job}**
 
 this Airflow ochestrates entire Spark workflows from data stitching , storing in Hive table in Hadoops Server and then accessed it again as per nodal request.
 

@@ -1,0 +1,5 @@
+APACHE AirFlow
+===============
+
+- Apache Airflow is job schedular which schedules and automate spark job
+- it Schedules workflow as given in Directed Acyclic Graphs (DAGs) 
