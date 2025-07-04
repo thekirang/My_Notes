@@ -1,0 +1,83 @@
+## What is AWS CloudFront?
+
+AWS CloudFront is a **Content Delivery Network (CDN)** service that accelerates the delivery of web content—such as HTML, CSS, JavaScript, images, videos, APIs, and dynamic content—to users globally. It achieves this by **caching copies of your content at edge locations** (data centers) around the world, reducing latency and improving load times for users.
+
+When a user requests content, CloudFront routes the request to the nearest edge location. If the content is cached there, it is delivered immediately. If not, CloudFront retrieves the content from the origin server (such as an S3 bucket, EC2 instance, or custom HTTP server), caches it at the edge, and then serves it to the user. This process ensures high performance, reliability, and availability for content delivery.
+
+## Key Components of CloudFront
+
+- **Edge Locations:** Geographically distributed data centers where CloudFront caches content closer to users.
+- **Origin Server:** The source of the original content (can be an S3 bucket, EC2 instance, load balancer, MediaStore, MediaPackage, Lambda function URL, or a custom HTTP server).
+- **Distribution:** The configuration entity in CloudFront that specifies how content should be delivered and from which origins.
+- **Cache Behaviors:** Rules that define how CloudFront caches content, including TTL (time-to-live), cookie handling, query string forwarding, and allowed HTTP methods.
+- **Regional Edge Caches:** Intermediate caches between the origin and edge locations, improving performance for less frequently accessed content.
+- **Signed URLs & Signed Cookies:** Mechanisms to restrict access to private content.
+- **Lambda@Edge:** Allows you to run custom code at CloudFront edge locations for advanced content manipulation and personalization.
+
+## How CloudFront Works
+
+1. **User Requests Content:** A user accesses a website or app and requests content (e.g., an image or video).
+2. **DNS Routing:** DNS routes the request to the nearest CloudFront edge location for optimal performance.
+3. **Cache Check:** CloudFront checks if the content is already cached at that edge location.
+   - If cached, CloudFront delivers the content immediately.
+   - If not cached, CloudFront fetches the content from the origin server.
+4. **Content Delivery:** The content is served to the user from the edge location, reducing latency.
+5. **Caching for Future Requests:** The content is now cached at the edge location for subsequent requests.
+6. **Cache Invalidation:** You can manually invalidate cached files before their TTL expires if you need to update content quickly.
+7. **Cache Update:** CloudFront regularly checks with the origin for updated content as per cache settings.
+
+## Supported Origins
+
+- **Amazon S3 buckets** (including static website hosting)
+- **Amazon EC2 instances**
+- **Elastic Load Balancers**
+- **MediaStore containers and MediaPackage channels** (for streaming video)
+- **Lambda function URLs**
+- **Custom HTTP servers** (on-premises or in the cloud)
+- **Origin Groups** for failover (primary and secondary origins)
+
+## CloudFront Distribution Types
+
+- **Web Distribution:** For websites, APIs, static and dynamic content.
+- **RTMP Distribution:** For streaming media (deprecated; use MediaStore/MediaPackage for video streaming).
+
+## Key Features and Capabilities
+
+- **Global Edge Network:** Delivers content from over 400 edge locations worldwide.
+- **Multiple HTTP Methods:** Supports GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
+- **HTTPS Support:** Secure content delivery with SSL/TLS encryption.
+- **Custom Domain Names:** Supports alternate domain names (CNAMEs) and custom SSL certificates.
+- **Access Control:** Restrict access using signed URLs, signed cookies, or AWS WAF (Web Application Firewall).
+- **Geographic Restrictions:** Block or allow content delivery to specific countries.
+- **Compression:** Automatically compresses files for supported browsers.
+- **Real-Time Logging:** Option to enable access logs for monitoring and analytics.
+- **Custom Error Pages:** Serve branded error messages for specific HTTP status codes.
+- **Field-Level Encryption:** Protect sensitive data at the application layer.
+
+## Setting Up CloudFront
+
+1. **Prepare Origin:** Upload your content to an S3 bucket or configure your HTTP server.
+2. **Create a Distribution:**
+   - Go to the CloudFront console.
+   - Click “Create Distribution.”
+   - Specify the origin (e.g., S3 bucket or custom server).
+   - Configure cache behavior, security, and distribution settings.
+   - Set up custom domain and SSL certificate if needed.
+3. **Deploy and Test:** CloudFront assigns a domain name to your distribution. Update your DNS or application to use this domain.
+4. **Monitor and Optimize:** Use CloudFront reports, logs, and cache invalidation as needed.
+
+## Common Use Cases
+
+- Accelerating websites and APIs for global users.
+- Delivering static and dynamic content with low latency.
+- Streaming video on demand or live events.
+- Securing content with access controls and encryption.
+- Integrating with AWS services like S3, EC2, Lambda@Edge, and WAF.
+
+## Best Practices
+
+- Set appropriate cache control headers on your origin to manage content freshness.
+- Use HTTPS for secure content delivery.
+- Regularly review and update cache behaviors and invalidations.
+- Monitor CloudFront metrics and logs for performance and security insights.
+- Use signed URLs or cookies for private content.

@@ -1,0 +1,88 @@
+What is Elastic Load Balancer (ELB)?
+ELB is an AWS service that automatically distributes incoming application or network traffic across multiple targets such as EC2 instances, containers, IP addresses, and Lambda functions in one or more Availability Zones (AZs).
+
+The main goal of ELB is to improve application availability, fault tolerance, and scalability by ensuring traffic is routed only to healthy targets and by balancing load evenly across resources.
+
+Key Features of ELB
+Automatic traffic distribution across multiple targets in multiple AZs.
+
+Health monitoring of registered targets; routes traffic only to healthy instances.
+
+Supports SSL/TLS termination for secure communication.
+
+Cross-zone load balancing to distribute traffic evenly across AZs.
+
+Deletion protection to prevent accidental deletion of load balancers.
+
+Supports scaling automatically based on incoming traffic demands.
+
+Works with various AWS services like Auto Scaling to build fault-tolerant, scalable applications.
+
+How ELB Works
+ELB accepts incoming client traffic via listeners configured with protocols and ports.
+
+It routes requests to registered targets based on listener rules and health checks.
+
+If a target becomes unhealthy, ELB stops sending traffic to it until it recovers.
+
+Listeners can have rules to route traffic based on content (e.g., host or path) for Application Load Balancers.
+
+Types of AWS Load Balancers
+Load Balancer Type	Layer in OSI Model	Use Case / Features
+Application Load Balancer (ALB)	Layer 7 (Application)	Ideal for HTTP/HTTPS traffic, supports advanced routing (path/host-based), HTTP/2, WebSockets.
+Network Load Balancer (NLB)	Layer 4 (Transport)	Handles TCP/UDP traffic with high throughput and low latency; supports static IPs per AZ.
+Gateway Load Balancer (GWLB)	Layer 3 (Network)	Deploys and scales virtual appliances like firewalls and intrusion detection systems.
+Classic Load Balancer (CLB)	Layer 4 & 7	Legacy load balancer for basic load balancing; supports TCP and HTTP/HTTPS but fewer features.
+ALB is best for modern web applications requiring content-based routing.
+
+NLB is suitable for extreme performance and volatile traffic patterns.
+
+GWLB is for integrating third-party network appliances.
+
+CLB is the older generation, still supported but less feature-rich.
+
+Components of an Application Load Balancer (ALB)
+Load Balancer: Single point of contact for clients.
+
+Listeners: Processes that check for connection requests using configured protocols and ports.
+
+Rules: Define how requests are routed based on conditions (e.g., URL path).
+
+Target Groups: Collections of targets (EC2 instances, IPs, Lambda) that receive traffic.
+
+Health Checks: Monitor the health of targets to route traffic only to healthy ones.
+
+Benefits of Using ELB
+High availability: Distributes traffic across multiple AZs and targets.
+
+Fault tolerance: Automatically reroutes traffic away from unhealthy targets.
+
+Scalability: Automatically scales to handle varying traffic loads.
+
+Security: Supports SSL termination and integration with AWS Certificate Manager.
+
+Simplified management: Integrates with Auto Scaling and AWS monitoring tools.
+
+Basic Steps to Create an ELB (Example: Application Load Balancer)
+Launch EC2 instances to serve as targets.
+
+Go to AWS Management Console → EC2 → Load Balancers.
+
+Click "Create Load Balancer" and select Application Load Balancer.
+
+Configure name, scheme (internet-facing or internal), and select at least two AZs.
+
+Set up listeners (e.g., HTTP port 80).
+
+Create or select a target group and register EC2 instances.
+
+Configure health checks.
+
+Review and create the load balancer.
+
+Use the provided DNS name to access the load-balanced application.
+
+Summary
+Elastic Load Balancer in AWS is a critical service for building highly available, scalable, and fault-tolerant applications by distributing traffic intelligently across multiple resources. It supports several types of load balancers tailored for different use cases, from web applications to high-performance network traffic and virtual appliance integration.
+
+
