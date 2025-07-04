@@ -1,0 +1,95 @@
+1. What is AWS Glue DataBrew?
+
+>AWS Glue DataBrew is a visual, no-code data preparation tool 
+that allows you to clean, normalize, and transform data for analytics and machine learning—without writing code.
+
+>It supports over 250 pre-built transformations
+ (e.g., removing duplicates, normalizing data, standardizing formats, filtering, aggregating).
+
+>DataBrew integrates with AWS Glue Data Catalog, S3, Redshift, RDS, and more.
+
+3. How Does DataBrew Work?
+Set Up: Ensure you have an AWS account, proper IAM roles, and permissions for DataBrew.
+
+Create a Project:
+
+Open DataBrew in the AWS Console.
+
+Create a new project, attach a recipe, and select a dataset (from S3, Redshift, etc.).
+
+Data Exploration:
+
+Preview a sample of your data (default: first 500 rows).
+
+Use the toolbar to apply transformations (filtering, joining, splitting, aggregating, etc.).
+
+Build Recipes:
+
+Each transformation is added as a step in your recipe.
+
+Recipes can have up to 100 steps and are versioned for reuse.
+
+Run Jobs:
+
+Apply recipes to full datasets by running jobs.
+
+Results can be exported to S3, Redshift, etc., for further analysis or ML.
+
+Automate & Schedule:
+
+Schedule jobs for recurring data preparation tasks.
+
+4. Typical DataBrew Interview Topics
+Primary Use Cases: Data cleaning, normalization, feature engineering, exploratory data analysis.
+
+Transformations: Know common actions—filtering, deduplication, string manipulation, joins, aggregations.
+
+Recipes: How to create, version, and reuse recipes; difference between interactive and job-based application.
+
+Integration: How DataBrew fits into a broader AWS analytics pipeline (e.g., S3 → DataBrew → Glue ETL → Redshift/QuickSight).
+
+Security: Role of IAM, encryption, and access control.
+
+Troubleshooting: How to handle errors, monitor job performance, and optimize workflows.
+
+5. Example Workflow (Practical Steps)
+Import Data: Load a dataset from S3.
+
+Explore & Clean: Use the visual interface to:
+
+Remove nulls
+
+Deduplicate records
+
+Standardize date formats
+
+Split/merge columns
+
+Encode categorical variables
+
+Build & Save Recipe: Each step is tracked; publish the recipe for version control.
+
+Run & Export: Apply the recipe to the full dataset and export the clean data to S3 or Redshift.
+
+Schedule Jobs: Set up recurring jobs for new incoming data.
+
+AWS Glue DataBrew typically imports data from sources like Amazon S3 (as well as Redshift, RDS, or JDBC sources), 
+then allows you to visually clean, transform, and normalize that data using a no-code interface. Once the data is prepared,
+ DataBrew exports the transformed output back to Amazon S3 or to other destinations such as Amazon Redshift 
+ for further analytics or machine learning workflows
+
+7. Sample Interview Questions
+What are the main features of AWS Glue DataBrew?
+
+How do you create and use a recipe in DataBrew?
+
+How does DataBrew integrate with other AWS services?
+
+How do you automate and schedule data preparation tasks in DataBrew?
+
+What security measures are available in DataBrew?
+
+Describe a project where you used DataBrew for data cleaning or transformation
+
+--------------------------------------------------------------------
+

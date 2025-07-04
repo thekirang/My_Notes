@@ -1,0 +1,49 @@
+What is Amazon RDS?
+Amazon RDS is a fully managed relational database service that makes it easy to set up, operate, and scale a relational database in the AWS Cloud.
+
+It automates common database administration tasks like provisioning, patching, backup, recovery, and scaling.
+
+Supports popular database engines: MySQL, PostgreSQL, MariaDB, Oracle, Microsoft SQL Server, IBM Db2, and Amazon Aurora.
+
+Key Features
+Managed Service: Automates database setup, patching, backups, and recovery.
+
+Scalability: Easily scale compute and storage resources up or down as needed.
+
+High Availability: Multi-AZ deployments for failover support; Read Replicas for scaling read workloads.
+
+Backups & Restore: Automated backups, manual snapshots, and point-in-time recovery.
+
+Security: Data encryption at rest and in transit, network isolation via VPC, IAM integration for access control.
+
+Monitoring: Integration with Amazon CloudWatch for metrics and alerting.
+
+Multiple Storage Types: General Purpose SSD, Provisioned IOPS SSD, and Magnetic storage options.
+
+Pay-as-you-go Pricing: Billed for instance hours, storage, and data transfer.
+
+Core Concepts
+Term	                      Description
+DB Instance         	An isolated database environment in the AWS Cloud. The basic building block of Amazon RDS.
+Database                Engine	The type of database software used (MySQL, PostgreSQL, Oracle, etc.).
+Multi-AZ	            Deploys standby replicas in different Availability Zones for high availability and failover.
+Read Replica	        Read-only copies for scaling read operations and offloading production databases.
+Snapshots	            Manual backups of DB instances that can be restored at any time.
+Parameter Groups	    Configuration settings for DB engines.
+Option Groups	        Enable and configure additional features for DB engines.
+
+
+Command to connect PostgreSQL from EC2
+sudo psql -U <username> -h <endpoint> -d <database_name> -W
+
+| Part                 | Meaning                                                                   |
+| -------------------- | ------------------------------------------------------------------------- |
+| `sudo`               | Run as root (only if needed, optional if user already has access to psql) |
+| `psql`               | PostgreSQL CLI client                                                     |
+| `-U <username>`      | The PostgreSQL username                                                   |
+| `-h <endpoint>`      | Host (could be RDS endpoint, IP, or DNS)                                  |
+| `-d <database_name>` | The database name you want to connect to                                  |
+| `-W`                 | Prompt for password                                                       |
+
+
+
