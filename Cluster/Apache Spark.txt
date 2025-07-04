@@ -1,0 +1,10 @@
+
+APACHE SPARK
+============
+- apache spark is the distributed processing engine designed for large-scale data processing is used due to its in-memory computation capabilities
+- Reads Dataframe and handles the data processing logic 
+- Used for Data Tranformation
+- Up to 100x faster than Hadoop MapReduce in certain cases.
+- Especially effective for iterative algorithms (e.g., machine learning).
+
+
