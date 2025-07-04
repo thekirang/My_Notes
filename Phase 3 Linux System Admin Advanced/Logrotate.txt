@@ -1,0 +1,74 @@
+sudo yum install logrotate
+
+
+2. **Understand the configuration structure:**
+   - The **main configuration file** is `/etc/logrotate.conf`.
+   - **Service-specific or custom configurations** should be placed in `/etc/logrotate.d/` as individual files for modular management
+
+3. **Edit the main configuration file** (`/etc/logrotate.conf`) to set global defaults. For example:
+
+
+   weekly
+   rotate 4
+   compress
+   create
+   dateext
+   include /etc/logrotate.d
+
+   - `weekly`: Rotate logs weekly.
+   - `rotate 4`: Keep 4 rotated logs before deleting the oldest.
+   - `compress`: Compress rotated logs.
+   - `create`: Create a new log file after rotation.
+   - `dateext`: Append the date to rotated log files.
+   - `include /etc/logrotate.d`: Include additional configs from the specified directory.
+
+4. **Add or modify service-specific log rotation:**
+   - Create a new file in `/etc/logrotate.d/` for your custom log. For example, to rotate `/var/log/myapp.log` daily and keep 7 copies:
+
+  
+     /var/log/myapp.log {
+         daily
+         rotate 7
+         compress
+         missingok
+         notifempty
+         create 0640 root root
+     }
+  
+   - Save this as `/etc/logrotate.d/myapp`
+
+5. **Set proper permissions** for security:
+   - Ensure `/etc/logrotate.conf` and files in `/etc/logrotate.d/` are owned by root and have restricted permissions:
+
+  
+     sudo chown root:root /etc/logrotate.conf /etc/logrotate.d/*
+     sudo chmod 600 /etc/logrotate.conf /etc/logrotate.d/*
+  
+   - Adjust group permissions if you want to delegate management to a specific group.
+
+6. **Test your configuration:**
+   - Run a dry-run to see what logrotate would do:
+
+  
+     sudo logrotate -d /etc/logrotate.conf
+  
+   - To force a real rotation for testing:
+
+  
+     sudo logrotate -f /etc/logrotate.conf
+  
+   - Check for errors and verify that logs are rotated as expected.
+
+7. **Automatic execution:**
+   - Logrotate is typically run automatically via a daily cron job (`/etc/cron.daily/logrotate`), so no further scheduling is needed for basic setups.
+
+**Summary Table:**
+
+| Step                   | Command/File Location               | Purpose                                 |
+|------------------------|-------------------------------------|-----------------------------------------|
+| Install logrotate      | `sudo yum install logrotate`        | Installs the utility                    |
+| Global config          | `/etc/logrotate.conf`               | Sets default rotation parameters        |
+| Service-specific config| `/etc/logrotate.d/`                 | Customizes rotation for specific logs   |
+| Test config            | `logrotate -d /etc/logrotate.conf`  | Dry-run to check configuration          |
+| Force rotation         | `logrotate -f /etc/logrotate.conf`  | Forces log rotation                     |
+| Permissions            | `chmod/chown` as above              | Secures config files                    |
