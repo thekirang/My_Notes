@@ -1,0 +1,176 @@
+## What is kdump?
+
+- **kdump** is a kernel crash dumping mechanism in RHEL 8+.
+- It captures the contents of system memory (a crash dump or `vmcore` file) when the kernel crashes (panic).
+- The captured dump is essential for root cause analysis of system failures, especially in production environments[1][2].
+
+## How kdump Works
+
+- kdump uses the `kexec` system call to boot into a secondary kernel (capture kernel) without a full hardware reboot.
+- The capture kernel runs in a reserved portion of memory and saves the memory image of the crashed kernel for analysis[1][2].
+
+## Step-by-Step Setup of kdump from Scratch
+
+### 1. Prerequisites
+
+- **Root/Administrator privileges** are required.
+- Ensure the `kexec-tools` package is installed (usually installed by default in RHEL 8+):
+  
+  yum install -y kexec-tools
+  
+
+### 2. Reserve Memory for kdump
+
+- Memory for the capture kernel is reserved at boot using the `crashkernel` parameter.
+- You can set this parameter for all kernels or a specific kernel.
+
+#### For All Kernels:
+
+grubby --update-kernel=ALL --args="crashkernel=xxM"
+
+Replace `xxM` with the required memory in megabytes (e.g., `crashkernel=256M`)[3][4][5].
+
+#### For a Specific Kernel:
+
+grubby --update-kernel=/boot/vmlinuz- --args="crashkernel=xxM"
+
+- To list installed kernels:
+  
+  ls -a /boot/vmlinuz-*
+  
+
+#### Automatic Reservation:
+- You can use `crashkernel=auto` for automatic memory reservation if the system has sufficient RAM (more than 1GB for x86_64)[6].
+
+#### Estimating Required Memory:
+- Use the following command to estimate the required crashkernel size:
+  
+  kdumpctl estimate
+  
+- For more detailed estimation:
+  
+  makedumpfile --mem-usage /proc/kcore
+  
+
+### 3. Reboot the System
+
+- After setting the `crashkernel` parameter, reboot to apply changes:
+  
+  reboot
+  
+
+### 4. Enable and Start the kdump Service
+
+
+systemctl enable --now kdump.service
+
+- This enables and starts the kdump service for all future boots[3][4][5].
+
+### 5. Verify kdump Service Status
+
+
+systemctl status kdump.service
+
+- The service should be **active (live)**.
+
+## kdump Configuration
+
+### Main Configuration File
+
+- `/etc/kdump.conf` is the main configuration file for kdump.
+
+### Setting the Dump Target
+
+- By default, dumps are saved to `/var/crash`.
+- You can change the target in `/etc/kdump.conf`:
+  
+  path /var/crash
+  
+- To save to a different directory:
+  
+  path /your/desired/path
+  
+- To save to a specific device or partition:
+  
+  ext4 UUID=
+  
+- To save over the network (NFS or SSH), uncomment and set:
+  
+  nfs :/export/cores
+  ssh user@server
+  sshkey /root/.ssh/kdump_id_rsa
+  
+
+### Core Collector Configuration
+
+- The `core_collector` directive controls how the dump is collected and compressed.
+- Default (recommended):
+  
+  core_collector makedumpfile -l --message-level 1 -d 31
+  
+  - `-l`: lzo compression
+  - `-d 31`: dump level (excludes unnecessary pages)
+  - `--message-level 1`: minimal output[7]
+
+### Failure Actions
+
+- You can configure what happens if kdump fails to save the dump:
+  
+  failure_action poweroff
+  
+  - Options: `reboot`, `halt`, `poweroff`, `shell`, `dump_to_rootfs`
+
+## Advanced Configuration
+
+### Excluding Kernel Modules
+
+- To prevent certain drivers from loading in the capture kernel, edit `/etc/sysconfig/kdump`:
+  
+  KDUMP_COMMANDLINE_APPEND="rd.driver.blacklist=module1,module2"
+  
+
+### Testing kdump
+
+- **Warning:** Testing will crash the kernel and may cause data loss. Do not test on production systems.
+- To test:
+  
+  echo c > /proc/sysrq-trigger
+  
+- After reboot, check for the `vmcore` file in the configured dump location[7].
+
+## Files Produced by kdump
+
+- `vmcore`: Main memory dump file.
+- `vmcore-dmesg.txt`: Kernel ring buffer log at the time of crash.
+- `kexec-dmesg.log`: Log from the capture kernel.
+
+## Enabling/Disabling kdump
+
+- **Enable:**
+  
+  systemctl enable --now kdump.service
+  
+- **Disable:**
+  
+  systemctl disable --now kdump.service
+  systemctl stop kdump.service
+  
+
+## Best Practices
+
+- Regularly test kdump after kernel, hardware, or configuration changes.
+- Ensure the dump target directory exists and has correct permissions.
+- Use UUID or LABEL for device specification to avoid device name changes after reboot.
+- For encrypted targets, ensure sufficient memory is reserved for LUKS operations[7].
+
+## Summary Table: Key kdump Commands
+
+| Task                        | Command/Config Example                                      |
+|-----------------------------|------------------------------------------------------------|
+| Install kexec-tools         | `yum install -y kexec-tools`                               |
+| Reserve memory (all kernels)| `grubby --update-kernel=ALL --args="crashkernel=256M"`     |
+| Enable kdump                | `systemctl enable --now kdump.service`                     |
+| Check status                | `systemctl status kdump.service`                           |
+| Configure dump path         | `path /var/crash` in `/etc/kdump.conf`                     |
+| Test kdump                  | `echo c > /proc/sysrq-trigger`                             |
+| Estimate memory             | `kdumpctl estimate`                                        |
