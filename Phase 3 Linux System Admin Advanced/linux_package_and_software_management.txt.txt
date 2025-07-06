@@ -67,8 +67,9 @@ How to Set Up Local Repository (Offline)
 
 3. Download packages, in above created folders: 
 
-   reposync --repo=BaseOS --download-path=/repo/baseos --download-metadata
-   reposync --repo=AppStream --download-path=/repo/appstream --download-metadata
+   reposync --repoid=rhel-10-for-x86_64-baseos-rpms --download-path=/repo/baseos --download-metadata
+   reposync --repoid=rhel-10-for-x86_64-appstream-rpms --download-path=/repo/appstream --download-metadata
+
 
 4. [Optional] Only if:
 
