@@ -1,5 +1,68 @@
-APACHE AirFlow
-===============
+APACHE AirFlow:
 
-- Apache Airflow is job schedular which schedules and automate spark job
-- it Schedules workflow as given in Directed Acyclic Graphs (DAGs) 
+Apache Airflow is a workflow scheduler that automates and manages different types of jobs, including Spark jobs.  
+It schedules workflows using DAGs (Directed Acyclic Graphs), which define the order of task execution.
+
+Directory Structure Example:
+airflow/
+├── dags/
+│   ├── my_first_dag.py
+│   └── etl/
+│       └── etl_dag.py
+├── plugins/
+│   └── my_custom_plugin.py
+├── logs/
+│   └── my_first_dag/
+├── airflow.cfg
+
+
+Key Concepts:
+
+- Task: A single job or step in the workflow (e.g., running a script or moving a file).
+
+- DAG (Directed Acyclic Graph): A structure that defines the order in which tasks should run.  
+  Ensures tasks run in the correct sequence and only once.
+
+- Operator: Determines how a task runs.  
+  Examples:  
+  - PythonOperator for Python code  
+  - BashOperator for shell commands  
+  - SparkSubmitOperator for Spark jobs
+
+Main Components of Airflow:
+
+- Scheduler: Decides when tasks should run based on the DAG.
+
+- Executor: Runs the tasks (either sequentially or in parallel).
+
+- Webserver: Provides a web UI to monitor workflows and check their status.
+
+- DAG Files: Python files where tasks, scheduling, and dependencies are defined.
+
+- Metadata Database: Stores workflow history, task status, and configuration.
+
+
+Quick Summary Table:
+
+Term              | What it Means
+------------------|--------------------------------------------------
+DAG               | Overall workflow and task order
+Task              | A single job in the workflow
+Operator          | Defines how a task is run (Python, Bash, etc.)
+Scheduler         | Decides when tasks should run
+Executor          | Executes the tasks
+Webserver         | UI to manage and monitor workflows
+Metadata Database | Stores task history and workflow information
+
+
+How Airflow and Spark Work Together:
+
+- Airflow DAGs are Python scripts that define the structure and timing of a workflow.
+- Spark jobs are separate scripts or JAR files (written in PySpark, Scala, or Java) that contain the actual data processing logic.
+
+Running Spark Jobs from Airflow:
+
+- Use operators like SparkSubmitOperator or SparkSqlOperator within your DAG to submit Spark jobs.
+- These operators point to your external Spark code and send them to the Spark cluster for execution.
+- Airflow manages when and how the Spark jobs run, but the actual logic stays in the Spark scripts.
+
