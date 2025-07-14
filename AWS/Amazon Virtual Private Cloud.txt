@@ -179,5 +179,15 @@ TIPS FOR INTERVIEW
 - Know the difference between public vs private subnet
 - Optionally mention NAT Gateway if asked how private subnets access the internet
 """
+---------------------------------------------------------------------------------------------
+
+Step                      Action                                      Key Selection/Association
+Create VPC               Define CIDR block                           -
+Create Subnet            Select VPC, define subnet CIDR              Associate with VPC
+Create Internet Gateway  Create and attach to VPC                    Attach to VPC
+Create Route Table       Create for VPC                              -
+Associate Route Table    Link to subnet                              Associate with subnet
+Edit Route Table         Add 0.0.0.0/0 via Internet Gateway          Select IGW as target for default route
+
 
 
