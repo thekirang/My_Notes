@@ -1,3 +1,27 @@
+Short:
+
+1. Install kexec-tools
+
+2.Reserve Memory for kdump,
+  use this command,
+sudo grubby --update-kernel=ALL --args="crashkernel=auto"
+
+
+3.Reboot the System
+
+4.Adjust /etc/kdump.conf to specify dump location or other options as needed.
+
+5.Enable and Start kdump Service
+sudo systemctl enable --now kdump.service
+
+6.Verify kdump Status
+systemctl status kdump.service
+
+
+
+
+--------------------------------------
+
 ## What is kdump?
 
 - **kdump** is a kernel crash dumping mechanism in RHEL 8+.
