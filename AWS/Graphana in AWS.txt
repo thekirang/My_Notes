@@ -1,3 +1,26 @@
+short:
+
+1.Install and Start Grafana
+
+2.run below script to fetch data from remote server (Passwordless authentication is Mandatory)
+
+3.save output in /usr/share/grafana/public/output.csv
+
+4.backup /etc/grafana/grafana.ini then edit /etc/grafana/grafana.ini and add,  plugin.marcusolsson-csv-datasource
+
+5.Open Grafana in a browser: http://<EC2-Public-IP>:3000
+
+6.Go to Configuration > Data Sources
+
+7.Add a CSV Data Source (marcusolsson-csv-datasource)
+
+8.In Path, enter: /usr/share/grafana/public/output.csv
+
+9.Save and Test.
+
+
+
+------------------------------------------------------
 
 # Step-by-Step Guide
 ## 1. Install and Start Grafana
