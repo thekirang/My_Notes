@@ -1,33 +1,38 @@
 Short:
 
-1. Install Logrotate
+1.sudo yum install logrotate   
 
 
-2. Create a new file named `applog` /etc/logrotate.d/applog
+2. Create a new file named `applog` under /etc/logrotate.d/
 
-3. Add Log Rotation Policy in `/etc/logrotate.d/applog`
+   sudo touch /etc/logrotate.d/applog
+
+then
+
+     sudo vi /etc/logrotate.d/applog
 
 
-  /var/log/applog.log {
-      daily
-      rotate 7
-      compress
-      missingok
-      notifempty
-      create 640 root adm
-  }
+3. Add the log rotation policy in /etc/logrotate.d/applog:
 
-  - This policy will:
-    - Rotate the log daily
-    - Keep 7 old log files
-    - Compress old logs
-    - Ignore if the log file is missing
-    - Skip rotation if the log is empty
-    - Create new logs with permissions `640`, owned by `root` and group `adm`
+   /var/log/applog.log {
+       daily                   # Rotate the log file every day
+       rotate 7                # Keep 7 rotated log files
+       compress                # Compress old logs
+       delaycompress           # Delay compression of the most recent rotated file
+       missingok               # No error if file is missing
+       notifempty              # Don’t rotate if file is empty
+       create 0640 root adm    # Create new log file with proper permissions
+       sharedscripts           # Run script only once even if multiple files rotate
+       postrotate
+           /bin/systemctl kill -s HUP myapp.service > /dev/null 2>&1 || true
+           # Signal app to reopen log file
+       endscript
+   }
 
-4. Perform a Dry-Run to Verify Configuration
 
-  sudo logrotate -d /etc/logrotate.d/applog
+4. Perform a dry-run to test the config:
+
+   sudo logrotate -d /etc/logrotate.d/applog
 
 
 

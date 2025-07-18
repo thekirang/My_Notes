@@ -1,21 +1,27 @@
-Short:
+Kdump Setup - Short Steps
+=========================
 
-1. Install kexec-tools
+1.yum install kexec-tools -y
 
-2.Reserve Memory for kdump,
-  use this command,
-sudo grubby --update-kernel=ALL --args="crashkernel=auto"
+2. Reserve Memory for Kdump:
+   sudo grubby --update-kernel=ALL --args="crashkernel=auto"
+
+3. This memory reservation only takes effect after a reboot.
+    reboot   
+
+4. Configure /etc/kdump.conf:
+
+     path /var/crash                                         #Set dump location:
+     default reboot                                          #planned reboot is preferred over unplanned/panic reboot
+     core_collector makedumpfile -l --message-level 1 -d 31  #Add this line to reduce dump size
 
 
-3.Reboot the System
+5. Enable and Start Kdump Service:
+   sudo systemctl enable --now kdump.service
 
-4.Adjust /etc/kdump.conf to specify dump location or other options as needed.
+6. Verify Kdump Status:
+   systemctl status kdump.service
 
-5.Enable and Start kdump Service
-sudo systemctl enable --now kdump.service
-
-6.Verify kdump Status
-systemctl status kdump.service
 
 
 

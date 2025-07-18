@@ -1,3 +1,14 @@
+SERVERS: HP DL360
+RACK: 42U
+SWITCHES: ARISTA 7010 & 7050
+
+------------------------------------
+
+
+
+
+
+
 HPE Integrated Lights-Out (iLO): Essential Notes
 
 What is HPE iLO:

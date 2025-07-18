@@ -1,0 +1,58 @@
+# **AWS Scalable Web Setup (July 2025) – Quick Steps**
+
+1. **EC2 Instance**
+
+   * Launch Amazon Linux 2 with Apache via User Data
+   * Name it `My-ASG-Template`
+   * Security Group: Allow SSH (22) + HTTP (80)
+
+2. **Launch Template**
+
+   * Create Launch Template using EC2 settings
+   * Name: `My-ASG-Template`
+
+3. **Target Group**
+
+   * Type: **Instance**, Protocol: HTTP (port 80)
+   * Name: `MyTargetGroup`
+   * Health check path: `/`
+   * Skip target registration (ASG will attach instances)
+
+4. **Application Load Balancer (ALB)**
+
+   * Name: `MyALB`, internet-facing
+   * Listener: HTTP (port 80)
+   * Select 2+ subnets across different AZs
+   * Attach `MyTargetGroup`
+
+5. **Auto Scaling Group (ASG)**
+
+   * Name: `MyASG`, use Launch Template
+   * VPC: Default VPC, 2+ subnets
+   * Attach to ALB using `MyTargetGroup`
+   * Min: 1, Desired: 1, Max: 3
+
+6. **CloudWatch Alarm**
+
+   * Metric: CPUUtilization > 70% for 2 periods
+   * Action: Trigger **ASG scale-out** and notify **SNS (`HighCPUAlert`)**
+
+7. **SNS Topic & Subscription**
+
+   * Create topic `HighCPUAlert`
+   * Add email subscription → confirm email
+
+8. **Scaling Policy**
+
+   * Attach **Target Tracking Policy** to ASG at 70% CPU
+
+9. **Test the Setup**
+
+   * SSH to EC2 → install `stress`
+   * Run: `stress --cpu 2 --timeout 300`
+   * Observe scale-out, CloudWatch Alarm, SNS email
+
+---
+
+✅ **Perfect for Interviews or Daily Practice**
+Let me know if you'd like it saved as `.txt`, `.md`, or turned into a **cheat sheet PDF**!
