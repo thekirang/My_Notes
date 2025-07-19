@@ -1,0 +1,33 @@
+For a role focused on AWS Data Analytics with an emphasis on AWS Glue DataBrew, here are the key AWS services you should know, listed one by one:
+
+AWS Glue DataBrew   - done
+Primary, no-code data preparation and transformation service.
+
+Amazon S3 (Simple Storage Service)  - done
+Used for storing raw input data and output datasets.
+
+AWS Glue Data Catalog
+Central metadata repository for organizing and discovering datasets.
+
+AWS Identity and Access Management (IAM)  - done
+Manages permissions and secure access to AWS resources.
+
+Amazon Redshift
+Cloud data warehouse; DataBrew can read from and write to Redshift tables.
+
+Amazon RDS (Relational Database Service) 
+Managed relational database; DataBrew can connect as a data source or target.
+
+AWS Lake Formation
+Optional: Provides fine-grained data governance and access control.
+
+AWS Glue Studio
+Optional: For building and orchestrating ETL pipelines that can use DataBrew recipes.
+
+Amazon CloudWatch done
+Monitors DataBrew jobs, logs, and performance metrics.
+
+Amazon AppFlow
+Optional: Moves data from SaaS applications into S3 for use in DataBrew.
+
+These services collectively support secure, scalable, and efficient data preparation and analytics workflows on AWS.
