@@ -1,5 +1,30 @@
 # **AWS Scalable Web Setup (July 2025) – Quick Steps**
 
+for memorise: 
+
+✅ What Happens When a Request Comes In (Step-by-Step Flow)
+Request comes to ALB (Load Balancer)
+🔁 It forwards the request to the Target Group.
+
+Target Group has one or more EC2 instances (from ASG)
+⚙️ If the current instance is under high load (e.g., CPU > 70%), it may slow down.
+
+CloudWatch Alarm detects high CPU usage
+📈 Based on configured metric (e.g., CPU > 70% for 2 mins), CloudWatch triggers:
+
+A signal to the Auto Scaling Group (ASG) to scale out.
+
+A notification to SNS, which sends an email alert.
+
+ASG launches a new EC2 instance
+🚀 Using the Launch Template, ASG automatically adds the new instance to the Target Group.
+
+ALB detects the new instance (via health checks)
+✅ Once healthy, ALB starts forwarding incoming requests to the new instance as well.
+
+
+# **AWS Scalable Web Setup (July 2025) – Quick Steps**
+
 1. **EC2 Instance**
 
    * Launch Amazon Linux 2 with Apache via User Data

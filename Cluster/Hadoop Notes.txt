@@ -24,7 +24,7 @@ SIMPLE ANALOGY: HDFS AS A LIBRARY
 - NameNode = Librarian (keeps catalog/index but doesn’t hold books).
 - DataNodes = Bookshelves (store actual books/files).
 
-SECONDARY NAMENODE
+SECONDARY NAMENODE/check pointing (only comes into picture when HA is not enabled)
 ------------------
 - Not a backup for the NameNode!
 - Periodically saves metadata snapshots and merges edit logs with the file system image.
@@ -32,7 +32,7 @@ SECONDARY NAMENODE
 - Does not take over if the NameNode crashes.
 - Analogy: Like a backup assistant librarian who organizes catalog updates for reference.
 
-BACKUP NODE
+Standby NameNODE (when HA is enabled)
 -----------
 - An active backup of the NameNode.
 - Maintains a real-time copy of the NameNode’s metadata.
