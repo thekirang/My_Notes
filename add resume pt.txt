@@ -1,0 +1,21 @@
+add email for specific alert from server
+
+---------------------------------
+
+
+#obesrvability using:
+Prometheus + Grafana
+
+why we dont use Prometheus + Grafana ?
+Prometheus need to installed on each server to be monitered, 
+and we dont have permission to install prometheus so we are using 
+Marcus Olsson CSV plugin + Grafana.
+
+-----------------------------------------------------------
+
+Top Two Databases to Learn for a Future-Proof Career
+1. PostgreSQL
+2. MongoDB
+
+------------------------------------------------------------
+

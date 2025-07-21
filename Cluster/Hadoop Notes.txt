@@ -1,6 +1,63 @@
 Hadoop: 
 Hadoop is an open-source software framework for distributed storage and processing of large datasets, commonly referred to as big data
 
+🧱 Core Hadoop Components:
+
+1. HDFS (Hadoop Distributed File System)
+2. YARN (Yet Another Resource Negotiator)
+3. MapReduce (replaced by Apache Spark)
+
+Explaination:
+
+1. HDFS (Hadoop Distributed File System)
+📂 Storage layer of Hadoop
+
+Stores large files by splitting them into blocks (default 128MB).
+
+Saves each block across multiple DataNodes (replication).
+
+Allows fault tolerance and scalable storage.
+
+Key Subcomponents:
+NameNode – The master; keeps metadata (file names, block locations).
+
+DataNode – The workers; actually store the blocks of data.
+
+2. YARN (Yet Another Resource Negotiator)
+🧠 Resource management layer
+
+Manages CPU + memory resources across the cluster.
+
+Allocates containers for tasks.
+
+Separates resource management from data processing.
+
+Key Subcomponents:
+ResourceManager (RM) – Global resource manager.
+
+NodeManager (NM) – Runs on each worker node to manage local resources.
+
+3. MapReduce
+🧮 Batch processing engine (older)
+
+Programming model for processing large data sets in parallel.
+
+Two phases:
+
+Map: Break input into key-value pairs.
+
+Reduce: Aggregate or summarize data.
+
+🔹 (Note: In modern setups, MapReduce is often replaced by Apache Spark for faster processing.)
+
+4. Common / Core Utilities
+🧰 Shared Java libraries and utilities
+
+Required by all Hadoop components.
+
+Includes I/O libraries, configuration, RPC, serialization, etc.
+
+-------------------------------------------------------------------------------
 
 HADOOP COMPONENTS OVERVIEW
 ==========================
@@ -87,6 +144,34 @@ THE BIG PICTURE: HOW IT ALL FITS TOGETHER
 
 - WORKFLOW MANAGEMENT:
     * Oozie automates and manages complex data processing pipelines.
+----------------------------------------------------------------------
+- Ambari™: A web-based tool for provisioning, managing, and monitoring Apache Hadoop clusters which includes support for Hadoop HDFS, Hadoop MapReduce, Hive, HCatalog, HBase, ZooKeeper, Oozie, Pig and Sqoop. 
+  Ambari also provides a dashboard for viewing cluster health such as heatmaps and ability to view MapReduce, Pig and Hive applications visually alongwith features to diagnose their performance characteristics in a user-friendly manner.
+
+- Avro™: A data serialization system.
+
+- Cassandra™: A scalable multi-master database with no single points of failure.
+
+- Chukwa™: A data collection system for managing large distributed systems.
+
+- HBase™: A scalable, distributed database that supports structured data storage for large tables.
+
+- Hive™: A data warehouse infrastructure that provides data summarization and ad hoc querying.
+
+- Mahout™: A Scalable machine learning and data mining library.
+
+- Ozone™: A scalable, redundant, and distributed object store for Hadoop.
+
+- Pig™: Pig is used for scripting data flows in Hadoop.
+
+- Spark™: A fast and general compute engine for Hadoop data. Spark provides a simple and expressive programming model that supports a wide range of applications, including ETL, machine learning, stream processing, and graph computation.
+
+- Submarine: A unified AI platform which allows engineers and data scientists to run Machine Learning and Deep Learning workload in distributed cluster.
+
+- Tez™: A generalized data-flow programming framework, built on Hadoop YARN, which provides a powerful and flexible engine to execute an arbitrary DAG of tasks to process data for both batch and interactive use-cases. 
+Tez is being adopted by Hive™, Pig™ and other frameworks in the Hadoop ecosystem, and also by other commercial software (e.g. ETL tools), to replace Hadoop™ MapReduce as the underlying execution engine.
+
+- ZooKeeper™: A high-performance coordination service for distributed applications.
 
 FINAL THOUGHTS
 --------------

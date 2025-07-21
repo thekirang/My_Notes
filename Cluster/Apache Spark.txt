@@ -12,7 +12,7 @@ APACHE SPARK
 ## What is Apache Spark?
 
 - Apache Spark is a distributed processing engine designed for large-scale data processing.
-- It is widely adopted for its in-memory computation capabilities, which make data processing much faster compared to traditional disk-based systems.
+- It is widely adopted for its in-memory (RAM used for this) computation capabilities, which make data processing much faster compared to traditional disk-based systems.
 
 ## Key Features
 
@@ -42,6 +42,66 @@ APACHE SPARK
 | Supported Languages    | Python, Scala, Java, R                           |
 | Use Cases              | Batch, streaming, ML, ETL                        |
 | Scalability            | Single server to thousands of nodes              |
+
+🔁 Quick Flow Recap (Layman Style):
+Driver: "Here's a job. Let me figure out how to do it (DAG)."
+
+Driver → Cluster Manager: "I need servers to run this job."
+
+Cluster Manager: "Okay, I found 10 servers. Executors launched."
+
+Driver → Executors: "Each of you take a piece of this data and process it like this..."
+
+Executors: "Done! Here's the result."
+
+Driver: "Thanks. Job complete."
+
+----------------------------
+
+procedure:
+
+Spark driver starts the application and analyzes the code.
+
+Driver creates a DAG (execution plan) for the job.
+
+Spark reads metadata and splits the 100 GB file into 800 partitions (e.g., 128 MB each).
+
+Cluster manager allocates executors (workers) on 10 servers.
+
+Each executor picks and processes assigned data partitions in parallel.
+
+Transformations (like map/filter) run locally per partition without shuffling.
+
+Actions (like groupBy/join) trigger a shuffle to redistribute data across executors.
+
+Final results are combined and sent to the driver or written to storage.
+
+Spark releases resources and ends the job.
+
+           ┌────────────────────────┐
+           │   Spark Driver Program │
+           └──────────┬─────────────┘
+                      │
+              Parses & Builds DAG
+                      │
+             Sends Job to Cluster Manager
+                      │
+        ┌─────────────┴─────────────┐
+        │                           │
+  Allocates Executors         Divides Data (Partitioning)
+        │                           │
+        └─────────────┬─────────────┘
+                      │
+            Executors Run Tasks
+                      │
+          (in-memory parallel processing)
+                      │
+       Shuffle (if groupBy/join/reduceByKey)
+                      │
+        Combine Final Results or Save
+                      │
+              Job Completed
+
 
 ## Conclusion
 
