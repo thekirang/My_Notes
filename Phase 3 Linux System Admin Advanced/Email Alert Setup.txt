@@ -1,0 +1,93 @@
+Amazon Linux 2023 and RHEL 10
+
+
+✅ Step 1: Install Required Packages
+-----------------------------------
+sudo yum update -y
+sudo yum install -y s-nail cronie
+
+📝 Note:
+- s-nail provides the enhanced `mail` command.
+- You do NOT need postfix or sendmail.
+- cronie is required for cron jobs.
+
+
+✅ Step 2: Generate Gmail App Password
+-------------------------------------
+1. Visit: https://myaccount.google.com/apppasswords
+2. Generate a new App Password for "Mail"
+3. Save the 16-character password safely.
+
+
+✅ Step 3: Configure mailx (s-nail) for Gmail SMTP
+--------------------------------------------------
+vi ~/.mailrc
+
+Paste the following content:
+
+set v15-compat
+set mta="smtp://kirangaikwad9711%40gmail.com:whtpbgwndsduffju@smtp.gmail.com:587"
+set smtp-use-starttls
+set from="kirangaikwad9711@gmail.com (Kiran)"
+
+
+✅ Step 4: Test Email
+---------------------
+echo "Test mail from $(hostname)" | s-nail -s "Disk Alert Test" -v kirangaikwad9711@gmail.com
+
+🧠 Expected Output:
+- Resolving smtp.gmail.com
+- Connecting...
+- TLS connection established
+- No errors shown
+- Email should appear in your inbox
+
+
+✅ Step 5: Create Disk Usage Alert Script (Optional)
+----------------------------------------------------
+Create script file:
+
+vi /root/disk-alert.sh
+
+Paste:
+
+#!/bin/bash
+
+THRESHOLD=20
+EMAIL="kirangaikwad9711@gmail.com"
+HOSTNAME=$(hostname)
+
+df -h --output=pcent,target | grep -v Use | while read output; do
+  usage=$(echo $output | awk '{print $1}' | tr -d '%')
+  mount_point=$(echo $output | awk '{print $2}')
+  if [ "$usage" -ge "$THRESHOLD" ]; then
+    echo "Warning: Disk usage is ${usage}% on $mount_point at $HOSTNAME" | \
+      s-nail -s "Disk Usage Alert on $HOSTNAME" "$EMAIL"
+  fi
+done
+
+Make it executable:
+
+chmod +x /root/disk-alert.sh
+
+
+✅ Step 6: Set Up Cron Job
+--------------------------
+Enable cron service:
+
+sudo systemctl enable --now crond
+
+Edit cron jobs:
+
+crontab -e
+
+Add the following line to run the script every 15 minutes:
+
+*/2 * * * * /root/disk-alert.sh
+
+----------------------------------
+
+Manually test disk space alert:
+
+fallocate -l 500m /tmp/filldisk.test
+
