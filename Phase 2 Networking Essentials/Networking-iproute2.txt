@@ -96,7 +96,7 @@ Final Flow: ping cdfd.com
 ------------------------
 
 ##########################################
-# 🧠 Mastering iproute2 in Linux
+# 🧠 Mastering iproute2 in Linux  (https://www.youtube.com/watch?v=0mOLLmAbhBA)
 ##########################################
 
 iproute2 is the modern suite replacing legacy tools like ifconfig, netstat, route, arp, and brctl.

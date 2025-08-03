@@ -1,0 +1,52 @@
+✅ S3 vs RDS – Common Features (Easy to Memorize)
+
+1️⃣ Fully Managed
+AWS handles patching, backups, failover, and scaling.
+
+2️⃣ Scalable
+S3: Auto-scales to unlimited object storage.
+
+RDS: Vertical (instance type) & horizontal (read replicas) scaling.
+
+3️⃣ High Availability & Durability
+S3: 11 9s durability, 99.99% availability.
+
+RDS: Multi-AZ failover, ≥99.95% availability.
+
+4️⃣ Data Protection
+Encryption: Both support at-rest (KMS) & in-transit (TLS).
+
+Backups:
+
+S3: Versioning, lifecycle rules
+
+RDS: Auto backups, snapshots, PITR
+
+5️⃣ Access Control
+IAM integration
+
+S3: Bucket policies, ACLs
+
+RDS: Security groups, subnet groups
+
+6️⃣ Monitoring
+CloudWatch metrics, alarms
+
+SNS notifications supported
+
+7️⃣ Pay-as-You-Go
+Usage-based pricing:
+
+S3: Storage + requests + transfer
+
+RDS: Instance hours + storage + I/O
+
+8️⃣ AWS Integration
+S3: Lambda triggers, Athena, Glue, Redshift
+
+RDS: CloudWatch Logs, Secrets Manager, BI tools
+
+📌 Mnemonic Tip:
+"F-SHARED-MAP"
+(Fully Managed, Scalable, High availability, Access control, Data protection, Monitoring, AWS integration, Pay-as-you-go)
+

@@ -114,7 +114,7 @@ Identify the operating system
 Perform basic vulnerability assessment
 
 It’s a go-to tool for network administrators, security professionals, and penetration testers.
-
+ 
 Basic Syntax:
 
 nmap [options] [target]

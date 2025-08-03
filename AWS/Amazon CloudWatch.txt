@@ -5,7 +5,7 @@ Alerting
 Reporting
 Logging
 
-it helps in cost optimising by assinsting auto scaling by scale up and down
+it helps in cost optimising by assisting auto scaling by scale up and down
 
 ✅ Visual Flow:
 

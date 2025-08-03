@@ -17,7 +17,7 @@ You can configure filesystems to mount automatically at boot by editing the /etc
 Each line corresponds to a filesystem and its mount options. 
 Example entry:
 
-/dev/sda1   /mnt   ext4   defaults   0   2     (here first 0 is used for dump to avoid backup, if want backup then use 1)  then 2 for below reason
+/dev/sda1   /mnt   ext4   defaults   0   2     (here first 0 is used for dump to avoid backup, if want backup then use 1)  then 2nd for below reason
 
 Fsck Order:
 

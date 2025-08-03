@@ -1,0 +1,190 @@
+########################################################
+#                AWS Lambda: Key Concepts              #
+#           and Interview Preparation Notes            #
+########################################################
+
+-------------------------------
+Overview and Definition
+-------------------------------
+AWS Lambda is an event-driven, serverless compute service that runs your code 
+without provisioning or managing servers. Lambda automatically handles server 
+and OS maintenance, scaling, patching, and logging—charging only for compute time used.
+
+-------------------------------
+Core Concepts
+-------------------------------
+
+1. Lambda Function
+   - Small, discrete unit of code triggered by events.
+   - Packaged as ZIP or container image.
+   - Supports: Node.js, Python, Java, Go, .NET, Ruby, custom runtimes.
+
+2. Function Handler & Execution Role
+   - Handler: Entry point function that processes the event.
+   - Execution Role: IAM role to access AWS services (e.g., S3, DynamoDB).
+
+3. Event Sources & Triggers
+   - Event examples: S3 uploads, DynamoDB streams, Kinesis, SNS, SQS, API Gateway.
+   - Event Source Mapping links stream/queue to the Lambda function.
+
+4. Execution Environment & Runtimes
+   - Lambda runs in isolated microVMs (Firecracker).
+   - Includes runtime interpreter + optional layers.
+
+5. Concurrency & Scaling
+   - Lambda scales automatically per request.
+   - Provisioned Concurrency pre-warms instances (avoid cold starts).
+   - Reserved Concurrency limits total concurrent executions.
+
+6. Cold Start vs. Warm Start
+   - Cold Start: First-time init → more latency.
+   - Warm Start: Reuses existing environment → faster.
+   - Mitigation: Provisioned concurrency, small packages, lightweight runtimes.
+
+-------------------------------
+Pricing Model
+-------------------------------
+- Requests: First 1M free/mo, then $0.20 per million.
+- Duration: Billed per ms, based on memory allocated (128 MB–10,240 MB).
+
+-------------------------------
+Common Use Cases
+-------------------------------
+- Web & Mobile Backends: with API Gateway (REST/WebSocket).
+- Data Processing: real-time via Kinesis, DynamoDB streams.
+- Event-Driven Automation: on S3 upload, Step Functions orchestration.
+- IoT Backends: handle MQTT telemetry.
+- Batch Jobs: via EventBridge schedules.
+
+-------------------------------
+Best Practices
+-------------------------------
+- Keep functions focused (small, ≤50 MB zipped).
+- Handle errors via retries, DLQs, Step Functions.
+- Use CloudWatch, X-Ray, custom metrics for observability.
+- Apply least-privilege IAM roles; use env variables or Secrets Manager.
+- Deploy with SAM, Serverless Framework, or CloudFormation (IaC).
+
+-------------------------------
+Minimal Working Lambda Function (Python Example)
+-------------------------------
+File: lambda_function.py
+
+def lambda_handler(event, context):
+    print("Received event:", event)
+    
+    return {
+        'statusCode': 200,
+        'body': 'Hello from Lambda!'
+    }
+
+-------------------------------
+Lambda Deployment Using AWS SAM
+-------------------------------
+
+template.yaml
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Hello World Lambda
+
+Resources:
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: HelloWorldFunction
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      MemorySize: 128
+      Timeout: 5
+      Events:
+        HelloAPI:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+
+Deploy with:
+sam build
+sam deploy --guided
+
+-------------------------------
+Lambda CI/CD with GitHub Actions
+-------------------------------
+
+.github/workflows/deploy-lambda.yml
+
+name: Deploy Lambda
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install AWS CLI & SAM CLI
+      run: |
+        pip install awscli
+        pip install aws-sam-cli
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+
+    - name: Build and Deploy with SAM
+      run: |
+        sam build
+        sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name lambda-stack --capabilities CAPABILITY_IAM
+
+-------------------------------
+Key Interview Topics & Questions
+-------------------------------
+
+1. Fundamentals
+   - What is Lambda? How is it different from EC2/ECS?
+   - Benefits and trade-offs of serverless.
+
+2. Event Sources & Integration
+   - Triggering Lambda from S3, API Gateway, DynamoDB?
+   - Can one Lambda handle multiple sources?
+
+3. Performance & Scaling
+   - What is a cold start? How to reduce it?
+   - Difference: provisioned vs. reserved concurrency?
+
+4. Security & Permissions
+   - How IAM roles and resource-based policies work with Lambda.
+   - Best practices for secrets and environment variables.
+
+5. Error Handling & Resilience
+   - Using retries, DLQs, fallback handling.
+   - SQS scenario: occasional failures—design a robust solution.
+
+6. Monitoring & Debugging
+   - Tools: CloudWatch Logs, X-Ray, custom metrics.
+   - How to trace issues across multiple Lambda calls.
+
+7. Deployment & CI/CD
+   - How to deploy Lambda using AWS SAM or CloudFormation.
+   - Using versioning and aliases for safe promotion.
+
+8. Architecture Scenarios
+   - Design a serverless API (API Gateway + Lambda + DynamoDB).
+   - Build an efficient pipeline for large S3 file uploads.
+
+-------------------------------

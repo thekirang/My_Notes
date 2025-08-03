@@ -26,8 +26,8 @@ Root User	  >       The initial identity with full access to all AWS resources. 
 IAM User	  >       Individual identity with specific permissions. Used for people or applications.
 IAM Group	  >       Collection of users with shared permissions. Easier to manage access for multiple users.
 IAM Role	  >       Temporary permissions for users or AWS services to perform specific tasks.
-Policy	      >       what should be allowd , JSON document defining permissions attached to users, groups, or roles.
-Federation    >       Allows external identities (e.g., corporate directory, social login) to access AWS.
+Policy	          >       what should be allowd , JSON document defining permissions attached to users, groups, or roles.
+Federation        >       Allows external identities (e.g., corporate directory, social login) to access AWS.
 
 🔑 IAM Policy = What actions are allowed, 
 🔑 IAM Role = Who can temporarily get those permissions, Temporary identity	It gets temporary credentials (for 1 hour, 12 hours, etc.)
@@ -43,7 +43,7 @@ Now you're asking:
 "Can that user access S3 from the EC2 instance?"
 
 ✅ The Correct Answer:
-👉 If that user logs in to the AWS Console or uses AWS CLI from their own laptop:
+👉 If that user logs in to the AWS Console Dashboard or uses AWS CLI from their own laptop:
 ✅ Yes, they can launch EC2 instances and also access S3 (because their user has both permissions).
 
 But...

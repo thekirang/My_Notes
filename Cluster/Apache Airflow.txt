@@ -24,10 +24,38 @@ Key Concepts:
   Ensures tasks run in the correct sequence and only once.
 
 - Operator: Determines how a task runs.  
-  Examples:  
-  - PythonOperator for Python code  
-  - BashOperator for shell commands  
-  - SparkSubmitOperator for Spark jobs
+
+🔹 If a task is defined in a Python function, then Airflow uses PythonOperator.
+
+🔹 If a task is defined using Linux shell commands, then Airflow uses BashOperator.
+
+🔹 If a task involves sending an email, then Airflow uses EmailOperator.
+
+🔹 If a task involves transferring files to/from SFTP, then Airflow uses SFTPOperator.
+
+🔹 If a task involves running SQL queries on a database, then Airflow uses SQLExecuteQueryOperator or a DB-specific one like:
+    • PostgresOperator (for PostgreSQL)
+    • MySqlOperator (for MySQL)
+    • SnowflakeOperator, etc.
+
+🔹 If a task involves scheduling a Spark job, then Airflow uses SparkSubmitOperator.
+
+🔹 If a task involves triggering another DAG, then Airflow uses TriggerDagRunOperator.
+
+🔹 If a task involves executing a Docker container, then Airflow uses DockerOperator.
+
+🔹 If a task involves executing a Kubernetes pod, then Airflow uses KubernetesPodOperator.
+
+🔹 If a task involves interacting with Google Cloud, then Airflow uses GCP operators like:
+    • GCSToBigQueryOperator
+    • BigQueryOperator
+    • GCSDeleteObjectsOperator
+
+🔹 If a task involves interacting with AWS, then Airflow uses AWS operators like:
+    • S3CreateObjectOperator
+    • LambdaInvokeFunctionOperator
+    • GlueJobOperator
+
 
 Main Components of Airflow:
 

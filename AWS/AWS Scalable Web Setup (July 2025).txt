@@ -77,7 +77,3 @@ ALB detects the new instance (via health checks)
    * Run: `stress --cpu 2 --timeout 300`
    * Observe scale-out, CloudWatch Alarm, SNS email
 
----
-
-✅ **Perfect for Interviews or Daily Practice**
-Let me know if you'd like it saved as `.txt`, `.md`, or turned into a **cheat sheet PDF**!

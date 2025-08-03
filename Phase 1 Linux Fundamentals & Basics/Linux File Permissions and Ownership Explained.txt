@@ -26,6 +26,7 @@ Others: No access (0 = ---)
 
 --------------------------------------------------------------------------------------
 
+
 2. ACLs (Access Control Lists)
 What it does: Adds extra permission rules beyond standard Unix permissions.
 
@@ -46,7 +47,11 @@ setfacl -m u:alice:rwx /shared_folder  # Lets Alice read, write, and execute
 ✅ Best for: Shared folders (e.g., a team project directory).
 ❌ Limitation: Still relies on users/groups (not as strict as SELinux).
 
+---------------------------------------------------------------------------------------------------
+
+
 3. SELinux (Security-Enhanced Linux)
+
 What it does: Adds military-grade security by enforcing strict rules.
 How it works:
 
@@ -62,6 +67,8 @@ Even if the file has rwx for Apache, SELinux can block it if the label doesn’t
 
 ✅ Best for: Servers, high-security systems (e.g., banks, government).
 ❌ Limitation: Complex to configure (but protects against hackers better).
+
+---------------------------------------------------------------------------------------------------
 
 Real-World Analogy
 Security System	Real-Life Comparison
@@ -98,6 +105,7 @@ rwx = 7
 rw- = 6
 r-x = 5
 r-- = 4
+--x = 1
 
 ===============================
 🛠️ 1. chmod (Change Mode - Permissions)

@@ -28,11 +28,11 @@ If a target becomes unhealthy, ELB stops sending traffic to it until it recovers
 Listeners can have rules to route traffic based on content (e.g., host or path) for Application Load Balancers.
 
 Types of AWS Load Balancers
-Load Balancer Type	Layer in OSI Model	Use Case / Features
+Load Balancer Type	        Layer in OSI Model	         Use Case / Features
 Application Load Balancer (ALB)	Layer 7 (Application)	Ideal for HTTP/HTTPS traffic, supports advanced routing (path/host-based), HTTP/2, WebSockets.
 Network Load Balancer (NLB)	Layer 4 (Transport)	Handles TCP/UDP traffic with high throughput and low latency; supports static IPs per AZ.
 Gateway Load Balancer (GWLB)	Layer 3 (Network)	Deploys and scales virtual appliances like firewalls and intrusion detection systems.
-Classic Load Balancer (CLB)	Layer 4 & 7	Legacy load balancer for basic load balancing; supports TCP and HTTP/HTTPS but fewer features.
+Classic Load Balancer (CLB)	Layer 4 & 7	        Legacy load balancer for basic load balancing; supports TCP and HTTP/HTTPS but fewer features.
 ALB is best for modern web applications requiring content-based routing.
 
 NLB is suitable for extreme performance and volatile traffic patterns.

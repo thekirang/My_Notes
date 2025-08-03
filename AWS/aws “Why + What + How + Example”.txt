@@ -1,0 +1,79 @@
+
+🔹 Amazon EC2
+• Why: Scalable virtual servers in the cloud
+• What: Instance types, EBS volumes, security groups, key pairs
+• How: Launch via CLI/Console, connect with SSH, monitor with CloudWatch
+• Example: Host a Java app on t3.medium with EBS and IAM role
+
+🔹 Amazon S3
+• Why: Store unstructured data at scale
+• What: Object storage with 11 9s durability, S3 Vectors, Glacier, Express One Zone
+• How: Use CLI/API, trigger Lambda via events, use vector APIs, Express Zone for low-latency
+• Example: Store user images + embeddings, invoke Lambda to process and cache via CloudFront
+
+🔹 Amazon VPC
+• Why: Isolated network environment in AWS
+• What: Subnets, route tables, NAT gateways, internet gateways, security groups, NACLs
+• How: Design public/private subnets, control traffic, use VPC endpoints
+• Example: Web tier in public subnet, DB tier in private subnet behind NAT
+
+🔹 Amazon RDS
+• Why: Managed relational databases
+• What: MySQL, PostgreSQL, Oracle, SQL Server; Multi-AZ, read replicas, April RUs
+• How: Provision via Console/CLI, enable backups and auto minor upgrades
+• Example: Use Aurora PostgreSQL with replica for analytics and failover
+
+🔹 AWS IAM
+• Why: Control access to AWS securely
+• What: Users, roles, policies, federation, IAM Roles Anywhere, ABAC
+• How: Write attribute-based (ABAC) policies, audit access with Access Analyzer
+• Example: EC2 assumes IAM role for read-only access to S3
+
+🔹 Amazon CloudWatch
+• Why: Monitor AWS resources and logs
+• What: Metrics, logs, alarms, dashboards, Live Tail, Application Signals for Lambda
+• How: Send metrics via agent/SDK, create alarms, query logs with Insights
+• Example: Alert on high EC2 CPU usage, trigger Auto Scaling and notify via SNS
+
+🔹 AWS Lambda
+• Why: Run code without managing servers
+• What: Multiple runtimes; SnapStart for Python/.NET; response streaming up to 200 MB
+• How: Deploy with CLI/SAM/CDK, trigger from S3/API Gateway, use Live Tail in VS Code
+• Example: On S3 upload, a Python Lambda logs metadata and sends SNS alert
+
+🔹 AWS CloudTrail
+• Why: Track AWS API activity for auditing and compliance
+• What: Captures API calls from Console, SDKs, CLI; logs stored in S3
+• How: Enable trail, analyze with Athena or CloudWatch Logs Insights
+• Example: Detect unauthorized EC2 actions using CloudTrail logs
+
+🔹 AWS Glue DataBrew
+• Why: Visually clean and transform data without code
+• What: 250+ transformations; integrates with S3, Athena, and Redshift
+• How: Connect data, create recipes, preview results, run jobs
+• Example: Clean sales CSV from S3, write cleaned data to Redshift
+
+🔹 AWS ELB (Elastic Load Balancing)
+• Why: Distribute traffic across multiple targets
+• What: ALB, NLB, CLB; supports health checks, SSL, sticky sessions
+• How: Create LB, register EC2/Lambda targets, define listeners and rules
+• Example: ALB routes HTTP(S) traffic to EC2s in multiple AZs
+
+🔹 Amazon CloudFront
+• Why: Global low-latency content delivery
+• What: CDN with edge caching, WAF, signed URLs, SaaS Manager, VPC Origins
+• How: Set up distribution, use Lambda@Edge, manage multi-sites with SaaS Manager
+• Example: Serve SPA from S3 and secure API backend in VPC via CloudFront
+
+🔹 Amazon SNS
+• Why: Send notifications or fan-out messages
+• What: Pub/Sub for email, SMS, Lambda, SQS
+• How: Create topic, subscribe endpoints, publish via Console/CLI/API
+• Example: Trigger SMS alert from CloudWatch alarm using SNS
+
+🔹 Amazon Auto Scaling
+• Why: Automatically adjust resource capacity based on demand
+• What: Target tracking, step scaling, scheduled actions; works with EC2, ECS, DynamoDB
+• How: Define scaling policies, integrate with CloudWatch alarms
+• Example: Auto-scale EC2 group when average CPU > 70% for 5 mins
+

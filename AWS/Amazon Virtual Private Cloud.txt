@@ -106,13 +106,14 @@ Traffic Mirroring: Copy network traffic for deep packet inspection.
 Default VPC: AWS provides a default VPC in each region for quick resource deployment.
 
 VPC vs. Traditional Private Cloud
-Feature	AWS VPC	Traditional Private Cloud
-Infrastructure	Managed by AWS	Owned by organization
-Scalability	Virtually unlimited, on-demand	Limited by physical hardware
-Management	Automated via AWS Console/CLI/API	Manual, requires IT staff
-Cost	Pay-as-you-go	Upfront capital and ongoing expenses
-Security	Built-in features (NACLs, SGs, IAM)	Organization-defined, may need extra
-Geographic Reach	Global AWS regions	Limited to data center locations
+Feature	AWS VPC	        Traditional Private Cloud
+Infrastructure	        Managed by AWS	Owned by organization
+Scalability	        Virtually unlimited, on-demand	Limited by physical hardware
+Management	        Automated via AWS Console/CLI/API Manual, requires IT staff
+Cost	                Pay-as-you-go Upfront capital and ongoing expenses
+Security	        Built-in features (NACLs, SGs, IAM) Organization-defined, may need extra
+Geographic Reach	Global AWS regions Limited to data center locations
+
 Summary
 AWS VPC is the foundation for secure, scalable, and flexible networking in AWS.
 

@@ -124,7 +124,7 @@ Reboot your system.
 
 Troubleshooting Flow
 1. Check Current Mode: getenforce
-2. Review Denials: ausearch / sealert
+2. Review Denials: ausearch -m avc -ts today | sealert
 3. Inspect Contexts: ls -Z /path_of_file/  and   ps -eZ
 4. Adjust Contexts/Policies if needed
 5. Use Permissive Mode temporarily for testing

@@ -49,7 +49,8 @@ rpm -qi nginx
 rpm -e nginx
 
 ----------------------------------------------------
-How to Set Up Local Repository (Offline)
+Recommended Method in Production
+: How to Set Up Local Repository (Offline)
 ----------------------------------------------------
 
 🧠 Super-Simple Memory Tip:
@@ -134,7 +135,9 @@ About DNF
 DNF is **online** — unless you configure it offline.
 
 ----------------------------------------------------
-How to Use DNF with an ISO File (Offline):
+#Not Recommended Method in Production
+
+How to Use DNF with an ISO File (Offline): 
 ----------------------------------------------------
 mkdir /mnt/dvd  
 mount /dev/cdrom /mnt/dvd

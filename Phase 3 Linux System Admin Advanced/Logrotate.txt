@@ -37,7 +37,7 @@ then
 
 
 -------------------------------------------------------------------------
-sudo yum install logrotate
+1. sudo yum install logrotate
 
 
 2. **Understand the configuration structure:**
