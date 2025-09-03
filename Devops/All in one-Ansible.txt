@@ -1,0 +1,226 @@
+========================================
+Ansible Complete Notes (Beginner to Pro)
+========================================
+
+## 🔹 1. WHAT IS ANSIBLE?
+
+* Agentless automation tool for configuration management, app deployment, orchestration
+* Uses SSH for communication
+* Playbooks written in YAML
+
+## 🔹 2. CORE COMPONENTS
+
+1. INVENTORY:
+
+   * Location: /etc/ansible/hosts (INI or YAML format)
+   * Defines managed nodes and groups
+
+2. PLAYBOOK:
+
+   * YAML file defining set of tasks to run on remote nodes
+   * Organized into plays, each with tasks
+
+3. TASK:
+
+   * Smallest unit of action (e.g., install a package)
+
+4. MODULE:
+
+   * Actual logic to perform tasks (e.g., yum, apt, copy, file)
+
+5. VARIABLES:
+
+   * Store dynamic values (defined in playbook, host\_vars, group\_vars, CLI, etc.)
+   * Precedence: CLI > Playbook > host\_vars/group\_vars > Inventory > role defaults
+
+6. HANDLERS:
+
+   * Triggered only when notified (e.g., restart service after config change)
+
+7. TEMPLATES:
+
+   * Jinja2-based, used for dynamic file generation
+
+8. FACTS:
+
+   * System information collected from managed nodes
+
+9. TAGS:
+
+   * Allow specific task execution: `ansible-playbook play.yml --tags "install"`
+
+10. CONFIGURATION FILE:
+
+    * Default: /etc/ansible/ansible.cfg
+    * Priority: ANSIBLE\_CONFIG > ./ansible.cfg > \~/.ansible.cfg > /etc/ansible/ansible.cfg
+
+11. AD-HOC COMMANDS:
+
+    * Quick one-liners
+    * Example: `ansible all -m ping`
+
+12. VAULT:
+
+    * Encrypts sensitive files
+    * Commands: create, encrypt, decrypt, rekey, edit
+
+13. COLLECTIONS:
+
+    * Bundles of roles, modules, plugins
+    * Location: \~/.ansible/collections or /usr/share/ansible/collections
+
+## 🔹 3. INSTALLATION AND SETUP
+
+
+✅ VERIFY SETUP:
+
+* `ansible all -m ping`
+
+## 🔹 4. AD-HOC COMMANDS
+
+* `ansible all -m ping`
+* `ansible devlinux -a "uptime"`
+* `ansible devlinux -b -m yum -a "name=httpd state=present"`
+
+## 🔹 5. BASIC PLAYBOOK EXAMPLE
+
+---
+
+* name: Install Apache
+  hosts: all
+  become: yes
+  tasks:
+
+  * name: Install httpd
+    yum:
+    name: httpd
+    state: present
+
+  * name: Start httpd
+    service:
+    name: httpd
+    state: started
+    enabled: yes
+
+## 🔹 6. ROLES DIRECTORY STRUCTURE
+
+project/
+├── inventory
+├── playbook.yml
+└── roles/
+└── webserver/
+├── tasks/
+│   └── main.yml
+├── handlers/
+│   └── main.yml
+└── templates/
+└── index.html.j2
+
+## 🔹 7. COMMON MODULES
+
+* command, shell, yum, apt, copy, file, template, service, user, cron
+
+## 🔹 8. VARIABLES EXAMPLE
+
+---
+
+* hosts: all
+  become: yes
+  vars:
+  pkg: httpd
+  path: /var/www/html/
+  tasks:
+
+  * name: install apache
+    yum:
+    name: "{{ pkg }}"
+    state: present
+
+  * name: deploy file
+    copy:
+    src: index.html
+    dest: "{{ path }}"
+
+## 🔹 9. HANDLERS EXAMPLE
+
+---
+
+* hosts: all
+  become: yes
+  tasks:
+
+  * name: update config
+    template:
+    src: app.conf.j2
+    dest: /etc/app.conf
+    notify: restart app
+
+  handlers:
+
+  * name: restart app
+    service:
+    name: app
+    state: restarted
+
+## 🔹 10. LOOPING EXAMPLE
+
+---
+
+* hosts: all
+  become: yes
+  tasks:
+
+  * name: Create users
+    user:
+    name: "{{ item }}"
+    state: present
+    loop:
+
+    * user1
+    * user2
+    * user3
+
+## 🔹 11. VAULT COMMANDS
+
+* Create encrypted file: `ansible-vault create secrets.yml`
+* Encrypt existing file: `ansible-vault encrypt vars.yml`
+* Decrypt file: `ansible-vault decrypt vars.yml`
+* Edit encrypted file: `ansible-vault edit secrets.yml`
+* Rekey: `ansible-vault rekey secrets.yml`
+
+## 🔹 12. FILE LOCATIONS (RHEL)
+
+| Component    | Location                                      |
+| ------------ | --------------------------------------------- |
+| Executables  | /usr/bin/ansible, /usr/bin/ansible-playbook   |
+| Config File  | /etc/ansible/ansible.cfg                      |
+| Inventory    | /etc/ansible/hosts                            |
+| Modules      | /usr/share/ansible/plugins/modules/           |
+| Roles        | /usr/share/ansible/roles/, \~/.ansible/roles/ |
+| Collections  | \~/.ansible/collections/                      |
+| Logs         | /var/log/ansible.log                          |
+| Custom Facts | /etc/ansible/facts.d/                         |
+
+## 🔹 13. INTERVIEW CHECKLIST
+
+✅ Understand inventory and playbook structure
+✅ Explain variable precedence
+✅ Know Ansible Vault usage
+✅ Write YAML playbooks with loops, handlers, tasks
+✅ Manage 100+ nodes (grouping, scaling, roles)
+✅ Practice common modules: yum, copy, template, service
+✅ Know ad-hoc command usage
+✅ Use of tags, dry-run (`--check`), step debug (`--step`)
+
+## 🔹 14. BEST PRACTICES
+
+* Avoid using root directly; use become
+* Use roles for modularity
+* Store secrets in vault-encrypted files
+* Keep playbooks simple and reusable
+* Maintain separate inventory for dev/stage/prod
+* Use `ansible-lint` for validating playbooks
+
+---
+
+## End of Ansible Unified Notes
